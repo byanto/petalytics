@@ -11,8 +11,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "orders", indexes = {
-        @Index(name = "idx_order_province", columnList = "province"),
-        @Index(name = "idx_order_city", columnList = "city")
+        @Index(name = "idx_order_province", columnList = "shipping_province"),
+        @Index(name = "idx_order_city", columnList = "shipping_city")
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
