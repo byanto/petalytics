@@ -1,6 +1,6 @@
 package com.budiyanto.petalytics.petalyticsbackend.repository;
 
-import com.budiyanto.petalytics.petalyticsbackend.model.Order;
+import com.budiyanto.petalytics.petalyticsbackend.domain.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

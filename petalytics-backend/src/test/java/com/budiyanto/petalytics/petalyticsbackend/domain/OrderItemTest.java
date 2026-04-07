@@ -1,4 +1,4 @@
-package com.budiyanto.petalytics.petalyticsbackend.model;
+package com.budiyanto.petalytics.petalyticsbackend.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
