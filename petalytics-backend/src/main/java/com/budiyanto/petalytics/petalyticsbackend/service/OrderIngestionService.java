@@ -40,6 +40,7 @@ public class OrderIngestionService {
         if (parser == null) {
             throw new IllegalArgumentException("No CSV parser found for marketplace: " + marketplace);
         }
+
         List<Order> orders = parser.parse(inputStream);
         orderRepository.saveAll(orders);
     }

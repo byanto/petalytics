@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -67,8 +68,14 @@ public class ShopeeCsvParser implements MarketplaceCsvParser {
                 );
 
             }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to parse Shopee CSV data", e);
+        } catch (DateTimeParseException ex){
+            throw new IllegalArgumentException("Invalid data format in Shopee CSV: Unable to parse dates.", ex);
+        } catch (NumberFormatException ex) {
+            throw new IllegalArgumentException("Invalid data format in Shopee CSV: Unable to parse numbers.", ex);
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException("Invalid Shopee CSV format: Missing required columns.", ex);
+        } catch (Exception ex) {
+            throw new RuntimeException("Failed to parse Shopee CSV data", ex);
         }
 
         return new ArrayList<>(orderMap.values());

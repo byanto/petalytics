@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 @DisplayName("Tiktok CSV Parser Tests")
 class TiktokCsvParserTest {
@@ -67,7 +68,54 @@ class TiktokCsvParserTest {
         then(thirdOrder.getOrderItems().getFirst().getSku()).isEqualTo("TURBAN DENISA-FANTA");
         then(thirdOrder.getTotalAmount()).isEqualByComparingTo("73390");
         then(thirdOrder.getTotalQuantity()).isEqualTo(11);
+    }
 
+    @Test
+    @DisplayName("Given a CSV with missing headers, when parse, then throws IllegalArgumentException")
+    void given_csvWithMissingHeaders_when_parse_then_throwsIllegalArgumentException() {
+        // Given: A CSV that is missing the "No. Pesanan" column
+        String badCsv = """
+            WrongColumn, Created Time
+            123, 04/01/2026 11:57:38
+            """;
+        InputStream inputStream = new ByteArrayInputStream(badCsv.getBytes(StandardCharsets.UTF_8));
+
+        // When & Then
+        thenThrownBy(() -> tiktokCsvParser.parse(inputStream))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Missing required columns");
+    }
+
+    @Test
+    @DisplayName("Given a CSV with invalid numbers, when parse, then throws IllegalArgumentException")
+    void given_csvWithInvalidNumbers_when_parse_then_throwsIllegalArgumentException() {
+        // Given: Harga Setelah Diskon is "FREE" instead of a number
+        String badCsv = """
+            Order ID, Created Time, Product Name, Seller SKU, SKU Subtotal After Discount, Quantity, Buyer Username, Regency and City, Province, Delivered Time
+            2601020X4SFPSA, 02/01/2026 12:52:38, Product A, SKU 1, FREE, 2, kakduha02, KOTA MEDAN, SUMATERA UTARA, 07/01/2026 12:52:38
+            """;
+        InputStream inputStream = new ByteArrayInputStream(badCsv.getBytes(StandardCharsets.UTF_8));
+
+        // When & Then
+        thenThrownBy(() -> tiktokCsvParser.parse(inputStream))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Unable to parse numbers");
+    }
+
+    @Test
+    @DisplayName("Given a CSV with invalid date, when parse, then throws IllegalArgumentException")
+    void given_csvWithInvalidDate_when_parse_then_throwsIllegalArgumentException() {
+        // Given: Waktu Pesanan Dibuat has a wrong date format
+        String badCsv = """
+            Order ID, Created Time, Seller SKU, Product Name, SKU Subtotal After Discount, Quantity
+            123, 2026.01.02 12.52, SKU1, Product A, 12900, 2
+            """;
+        InputStream inputStream = new ByteArrayInputStream(badCsv.getBytes(StandardCharsets.UTF_8));
+
+        // When & Then
+        thenThrownBy(() -> tiktokCsvParser.parse(inputStream))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Unable to parse dates");
     }
 
 }

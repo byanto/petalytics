@@ -108,6 +108,19 @@ class OrderIngestionServiceTest {
     }
 
     @Test
+    @DisplayName("Given an unsupported Marketplace, when ingest, then throws IllegalArgumentException")
+    void given_unsupportedMarketplace_when_ingest_then_throwsIllegalArgumentException() {
+        // Given
+        InputStream inputStream = new ByteArrayInputStream("dummy csv data".getBytes(StandardCharsets.UTF_8));
+
+        // When & Then
+        // Since we only registered the Shopee parser in setUp(), passing TIKTOK will yield a null parser.
+        thenThrownBy(() -> orderIngestionService.ingest(inputStream, Marketplace.TIKTOK))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("No CSV parser found for marketplace: TIKTOK");
+    }
+
+    @Test
     @DisplayName("Given a null InputStream, when ingest, then throws IllegalArgumentException")
     void given_nullInputStream_when_ingest_then_throwsIllegalArgumentException() {
         // When & Then

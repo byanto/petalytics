@@ -7,9 +7,11 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Shopee CSV Parser Tests")
@@ -68,8 +70,54 @@ class ShopeeCsvParserTest {
         then(thirdOrder.getOrderItems().getFirst().getSku()).isEqualTo("TURBAN DENISA-FANTA");
         then(thirdOrder.getTotalAmount()).isEqualByComparingTo("73390");
         then(thirdOrder.getTotalQuantity()).isEqualTo(11);
+    }
 
+    @Test
+    @DisplayName("Given a CSV with missing headers, when parse, then throws IllegalArgumentException")
+    void given_csvWithMissingHeaders_when_parse_then_throwsIllegalArgumentException() {
+        // Given: A CSV that is missing the "No. Pesanan" column
+        String badCsv = """
+            WrongColumn, Waktu Pesanan Dibuat
+            123, 2026-01-02 12:52
+            """;
+        InputStream inputStream = new ByteArrayInputStream(badCsv.getBytes(StandardCharsets.UTF_8));
+
+        // When & Then
+        thenThrownBy(() -> shopeeCsvParser.parse(inputStream))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Missing required columns");
+    }
+
+    @Test
+    @DisplayName("Given a CSV with invalid numbers, when parse, then throws IllegalArgumentException")
+    void given_csvWithInvalidNumbers_when_parse_then_throwsIllegalArgumentException() {
+        // Given: Harga Setelah Diskon is "FREE" instead of a number
+        String badCsv = """
+            No. Pesanan, Waktu Pesanan Dibuat, Nama Produk, Nomor Referensi SKU, Harga Setelah Diskon, Jumlah, Username (Pembeli), Kota/Kabupaten, Provinsi, Waktu Pesanan Selesai
+            2601020X4SFPSA, 2026-01-02 12:52, Product A, SKU 1, FREE, 2, kakduha02, KOTA MEDAN, SUMATERA UTARA, 2026-01-02 15:42
+            """;
+        InputStream inputStream = new ByteArrayInputStream(badCsv.getBytes(StandardCharsets.UTF_8));
+
+        // When & Then
+        thenThrownBy(() -> shopeeCsvParser.parse(inputStream))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Unable to parse numbers");
+    }
+
+    @Test
+    @DisplayName("Given a CSV with invalid date, when parse, then throws IllegalArgumentException")
+    void given_csvWithInvalidDate_when_parse_then_throwsIllegalArgumentException() {
+        // Given: Waktu Pesanan Dibuat has a wrong date format
+        String badCsv = """
+            No. Pesanan,Waktu Pesanan Dibuat,Nomor Referensi SKU,Nama Produk,Harga Setelah Diskon,Jumlah
+            123, 2026.01.02 12.52, SKU1, Product A, 12900, 2
+            """;
+        InputStream inputStream = new ByteArrayInputStream(badCsv.getBytes(StandardCharsets.UTF_8));
+
+        // When & Then
+        thenThrownBy(() -> shopeeCsvParser.parse(inputStream))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Unable to parse dates");
     }
 
 }
-

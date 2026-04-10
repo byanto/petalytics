@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -75,8 +76,14 @@ public class TiktokCsvParser implements MarketplaceCsvParser {
                 );
 
             }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to parse Tiktok CSV data", e);
+        } catch (DateTimeParseException ex) {
+            throw new IllegalArgumentException("Invalid data format in Tiktok CSV: Unable to parse dates.", ex);
+        } catch (NumberFormatException ex) {
+            throw new IllegalArgumentException("Invalid data format in Tiktok CSV: Unable to parse numbers.", ex);
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException("Invalid Tiktok CSV format: Missing required columns.", ex);
+        } catch (Exception ex) {
+            throw new RuntimeException("Failed to parse Tiktok CSV data", ex);
         }
 
         return new ArrayList<>(orderMap.values());
