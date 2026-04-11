@@ -2,7 +2,8 @@ package com.budiyanto.petalytics.petalyticsbackend.repository;
 
 import com.budiyanto.petalytics.petalyticsbackend.domain.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.domain.Order;
-import com.budiyanto.petalytics.petalyticsbackend.domain.dto.OrderSummaryByLocationDto;
+import com.budiyanto.petalytics.petalyticsbackend.domain.dto.ChannelSummaryDto;
+import com.budiyanto.petalytics.petalyticsbackend.domain.dto.LocationSummaryDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -19,7 +20,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
 
 @DataJpaTest
 @Import(TestcontainersConfiguration.class)
@@ -107,17 +107,35 @@ class OrderRepositoryTest {
         void given_existingOrders_when_retrieveOrderSummaryByLocation_then_returnsAggregatedMetrics() {
             // Given (handled by @BeforeEach)
             // When
-            List<OrderSummaryByLocationDto> result = orderRepository.retrieveOrderSummaryByLocation();
+            List<LocationSummaryDto> result = orderRepository.retrieveOrderSummaryByLocation();
 
             // Then
             then(result).hasSize(3);
             then(result.getFirst().shippingProvince()).isEqualTo("Sumatera Selatan");
-            OrderSummaryByLocationDto summary = result.stream().filter(
+            LocationSummaryDto summary = result.stream().filter(
                     r -> r.shippingProvince().equals("Sumatera Utara") && r.shippingCity().equals("Kota Medan")
             ).findFirst().orElseThrow();
             then(summary.shippingProvince()).isEqualTo("Sumatera Utara");
             then(summary.totalOrders()).isEqualTo(2);
             then(summary.totalRevenue()).isEqualByComparingTo("13000");
+        }
+
+        @Test
+        @DisplayName("Given existing orders, when retrieveOrderSummaryByChannel, then returns aggregated metrics")
+        void given_existingOrders_when_retrieveOrderSummaryByChannel_then_returnsAggregatedMetrics() {
+            // Given (handled by @BeforeEach)
+            // When
+            List<ChannelSummaryDto> result = orderRepository.retrieveOrderSummaryByChannel();
+
+            // Then
+            then(result).hasSize(2);
+            then(result.getFirst().marketplace()).isEqualTo(Marketplace.SHOPEE);
+            ChannelSummaryDto summary = result.stream().filter(
+                    r -> r.marketplace().equals(Marketplace.TIKTOK)
+            ).findFirst().orElseThrow();
+            then(summary.marketplace()).isEqualTo(Marketplace.TIKTOK);
+            then(summary.totalOrders()).isEqualTo(2);
+            then(summary.totalRevenue()).isEqualByComparingTo("18250");
         }
     }
 }
