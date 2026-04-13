@@ -4,8 +4,17 @@ import {
     CloudUpload,
     CheckCircle2,
     FileText,
-    MoreVertical
+    Trash2
 } from 'lucide-react';
+
+// Define the shape of our history data
+interface UploadJob {
+    id: string;
+    fileName: string;
+    date: string;
+    status: 'Processing' | 'Completed' | 'Failed';
+    marketplace: string;
+}
 
 export default function DataImportPage() {
     // 1. React State Management
@@ -14,16 +23,32 @@ export default function DataImportPage() {
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
     const [message, setMessage] = useState<string>('');
     
+    const [uploadHistory, setUploadHistory] = useState<UploadJob[]>([]);
+
     // 2. Reference to the hidden file input
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     // 3. Handlers
+    const handleMarketplaceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setMarketplace(e.target.value);
+        // Defensive UX: Clear the file if the source changes, because the required file extension (.csv vs .xlsx) changes!
+        setFile(null);
+        setStatus('idle');
+        setMessage('');
+        if (fileInputRef.current) fileInputRef.current.value = '';
+    };
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             setFile(e.target.files[0]);
             setStatus('idle');
             setMessage('');
         }
+    };
+
+    const handleRemoveHistory = (jobId: string) => {
+        // Filters out the job with the matching ID, effectively deleting it from the UI
+        setUploadHistory((prev) => prev.filter(job => job.id !== jobId));
     };
 
     const handleUpload = async () => {
@@ -33,16 +58,36 @@ export default function DataImportPage() {
         }
 
         setStatus('loading');
+        
+        // Create a new history entry as 'Processing'
+        const jobId = Date.now().toString();
+        const newJob: UploadJob = {
+            id: jobId,
+            fileName: file.name,
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            status: 'Processing',
+            marketplace: marketplace
+        };
+        
+        // Add the new job to the top of the history list
+        setUploadHistory((prev) => [newJob, ...prev]);
 
         try {
             await ingestionService.uploadCsv(file, marketplace);
             setStatus('success');
             setMessage('Data successfully normalized and ingested!');
+            
+            // Update the specific job in history to 'Completed'
+            setUploadHistory((prev) => prev.map(job => job.id === jobId ? { ...job, status: 'Completed' } : job));
+            
             setFile(null); // Reset for the next upload
             if (fileInputRef.current) fileInputRef.current.value = '';
         } catch (error: any) {
             setStatus('error');
             setMessage(error.response?.data?.message || 'An unexpected error occurred.');
+            
+            // Update the specific job in history to 'Failed'
+            setUploadHistory((prev) => prev.map(job => job.id === jobId ? { ...job, status: 'Failed' } : job));
         }
     };
 
@@ -51,7 +96,7 @@ export default function DataImportPage() {
             {/* Page Header */}
             <div className="flex flex-col gap-1">
                 <h2 className="text-3xl font-extrabold text-on-surface tracking-tight">Data Import</h2>
-                <p className="text-on-surface-variant font-inter text-sm">Ingest your enterprise data into the Petalytics ecosystem. Currently only support CSV file format.</p>
+                <p className="text-on-surface-variant font-inter text-sm">Ingest your enterprise data into the Petalytics ecosystem. Supports Shopee (.xlsx) and TikTok (.csv) exports.</p>
             </div>
 
             {/* Marketplace Selector (Required by Backend) */}
@@ -59,7 +104,7 @@ export default function DataImportPage() {
                 <label className="text-sm font-bold text-on-surface uppercase tracking-widest">Data Source</label>
                 <select 
                     value={marketplace}
-                    onChange={(e) => setMarketplace(e.target.value)}
+                    onChange={handleMarketplaceChange}
                     className="w-full md:w-64 p-3 bg-surface-container-lowest border-2 border-outline-variant/30 rounded-lg text-on-surface font-medium outline-none focus:border-primary transition-colors"
                 >
                     <option value="SHOPEE">Shopee</option>
@@ -77,7 +122,7 @@ export default function DataImportPage() {
                 {/* Hidden File Input */}
                 <input 
                     type="file" 
-                    accept=".csv" 
+                    accept={marketplace === 'SHOPEE' ? '.xlsx' : '.csv'}
                     className="hidden" 
                     ref={fileInputRef} 
                     onChange={handleFileChange} 
@@ -142,69 +187,51 @@ export default function DataImportPage() {
                             <th className="px-6 py-4 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest font-inter">File Name</th>
                             <th className="px-6 py-4 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest font-inter">Date</th>
                             <th className="px-6 py-4 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest font-inter">Status</th>
+                            <th className="px-6 py-4 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest font-inter">Marketplace</th>
                             <th className="px-6 py-4 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest font-inter text-right">Action</th>
                         </tr>
                         </thead>
                         <tbody className="divide-y divide-outline-variant/10">
-                        <tr className="hover:bg-surface-container-low transition-colors group">
-                            <td className="px-6 py-5">
-                                <div className="flex items-center gap-3">
-                                    <FileText size={18} className="text-primary" />
-                                    <span className="text-sm font-medium text-on-surface">Q4_Inventory_Final.csv</span>
-                                </div>
-                            </td>
-                            <td className="px-6 py-5 text-sm text-on-surface-variant">Oct 24, 2023</td>
-                            <td className="px-6 py-5">
-                                <span className="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-black rounded uppercase tracking-tighter">Completed</span>
-                            </td>
-                            <td className="px-6 py-5 text-right">
-                                <button className="text-on-surface-variant hover:text-on-surface transition-colors">
-                                    <MoreVertical size={18} />
-                                </button>
-                            </td>
-                        </tr>
-                        <tr className="hover:bg-surface-container-low transition-colors">
-                            <td className="px-6 py-5">
-                                <div className="flex items-center gap-3">
-                                    <FileText size={18} className="text-primary" />
-                                    <span className="text-sm font-medium text-on-surface">Monthly_Sales_October.xlsx</span>
-                                </div>
-                            </td>
-                            <td className="px-6 py-5 text-sm text-on-surface-variant">Oct 25, 2023</td>
-                            <td className="px-6 py-5">
-                                <div className="flex flex-col gap-2 w-48">
-                                    <div className="flex justify-between text-[10px] font-bold text-on-surface-variant">
-                                        <span>Processing</span>
-                                        <span>65%</span>
-                                    </div>
-                                    <div className="h-1.5 w-full bg-surface-container-low rounded-full overflow-hidden">
-                                        <div className="h-full bg-primary w-[65%]"></div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="px-6 py-5 text-right">
-                                <button className="text-on-surface-variant hover:text-on-surface transition-colors">
-                                    <MoreVertical size={18} />
-                                </button>
-                            </td>
-                        </tr>
-                        <tr className="hover:bg-surface-container-low transition-colors">
-                            <td className="px-6 py-5">
-                                <div className="flex items-center gap-3">
-                                    <FileText size={18} className="text-primary" />
-                                    <span className="text-sm font-medium text-on-surface">Customer_Log_2023.csv</span>
-                                </div>
-                            </td>
-                            <td className="px-6 py-5 text-sm text-on-surface-variant">Oct 22, 2023</td>
-                            <td className="px-6 py-5">
-                                <span className="px-3 py-1 bg-red-100 text-red-700 text-[10px] font-black rounded uppercase tracking-tighter">Failed</span>
-                            </td>
-                            <td className="px-6 py-5 text-right">
-                                <button className="text-on-surface-variant hover:text-on-surface transition-colors">
-                                    <MoreVertical size={18} />
-                                </button>
-                            </td>
-                        </tr>
+                        {uploadHistory.length === 0 ? (
+                            <tr>
+                                <td colSpan={4} className="px-6 py-8 text-center text-sm text-on-surface-variant italic">
+                                    No recent uploads in this session.
+                                </td>
+                            </tr>
+                        ) : (
+                            uploadHistory.map((job) => (
+                                <tr key={job.id} className="hover:bg-surface-container-low transition-colors group">
+                                    <td className="px-6 py-5">
+                                        <div className="flex items-center gap-3">
+                                            <FileText size={18} className="text-primary" />
+                                            <span className="text-sm font-medium text-on-surface">{job.fileName}</span>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-5 text-sm text-on-surface-variant">{job.date}</td>
+                                    <td className="px-6 py-5">
+                                        {job.status === 'Completed' && (
+                                            <span className="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-black rounded uppercase tracking-tighter">Completed</span>
+                                        )}
+                                        {job.status === 'Failed' && (
+                                            <span className="px-3 py-1 bg-red-100 text-red-700 text-[10px] font-black rounded uppercase tracking-tighter">Failed</span>
+                                        )}
+                                        {job.status === 'Processing' && (
+                                            <span className="px-3 py-1 bg-blue-100 text-blue-700 text-[10px] font-black rounded uppercase tracking-tighter animate-pulse">Processing...</span>
+                                        )}
+                                    </td>
+                                    <td className="px-6 py-5 text-sm text-on-surface-variant">{job.marketplace}</td>
+                                    <td className="px-6 py-5 text-right">
+                                        <button 
+                                            onClick={() => handleRemoveHistory(job.id)}
+                                            title="Clear from history"
+                                            className="text-outline-variant hover:text-red-500 transition-colors"
+                                        >
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
                         </tbody>
                     </table>
                 </div>
