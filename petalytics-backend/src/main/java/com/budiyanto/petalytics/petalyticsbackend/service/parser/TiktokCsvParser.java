@@ -8,6 +8,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.math.RoundingMode;
+import org.apache.commons.io.input.BOMInputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,7 +37,10 @@ public class TiktokCsvParser implements MarketplaceCsvParser {
     public List<Order> parse(InputStream inputStream) {
         Map<String, Order> orderMap = new LinkedHashMap<>();
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+        // We wrap the inputStream in the BOMInputStream before giving it to the reader
+        try (BOMInputStream bomInputStream = BOMInputStream.builder().setInputStream(inputStream).get();
+             BufferedReader reader = new BufferedReader(new InputStreamReader(bomInputStream, StandardCharsets.UTF_8))) {
+             
             CSVParser csvParser = CSVFormat.DEFAULT.builder()
                     .setHeader()
                     .setSkipHeaderRecord(true)
@@ -81,7 +86,7 @@ public class TiktokCsvParser implements MarketplaceCsvParser {
         } catch (NumberFormatException ex) {
             throw new IllegalArgumentException("Invalid data format in Tiktok CSV: Unable to parse numbers.", ex);
         } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Invalid Tiktok CSV format: Missing required columns.", ex);
+            throw new IllegalArgumentException("Invalid Tiktok CSV format: Missing required columns: " + ex.getMessage(), ex);
         } catch (Exception ex) {
             throw new RuntimeException("Failed to parse Tiktok CSV data", ex);
         }
