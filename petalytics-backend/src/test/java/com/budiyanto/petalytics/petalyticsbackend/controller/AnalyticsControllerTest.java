@@ -47,8 +47,8 @@ public class AnalyticsControllerTest {
             mockMvc.perform(get("/api/analytics/location-summary"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.size()").value(2))
-                    .andExpect(jsonPath("$[0].shippingProvince").value("Sumatera Selatan"))
-                    .andExpect(jsonPath("$[0].shippingCity").value("Kota Palembang"))
+                    .andExpect(jsonPath("$[0].province").value("Sumatera Selatan"))
+                    .andExpect(jsonPath("$[0].city").value("Kota Palembang"))
                     .andExpect(jsonPath("$[0].totalOrders").value(20))
                     .andExpect(jsonPath("$[0].totalRevenue").value(300));
         }

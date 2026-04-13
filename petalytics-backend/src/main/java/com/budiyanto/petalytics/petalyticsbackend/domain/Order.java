@@ -11,8 +11,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "orders", indexes = {
-        @Index(name = "idx_order_province", columnList = "shipping_province"),
-        @Index(name = "idx_order_city", columnList = "shipping_city")
+        @Index(name = "idx_order_province", columnList = "province"),
+        @Index(name = "idx_order_city", columnList = "city")
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -36,11 +36,11 @@ public class Order {
 
     private String username;
 
-    @Column(name = "shipping_province", nullable = false)
-    private String shippingProvince;
+    @Column(name = "province", nullable = false)
+    private String province;
 
-    @Column(name = "shipping_city", nullable = false)
-    private String shippingCity;
+    @Column(name = "city", nullable = false)
+    private String city;
 
     @Column(name = "total_quantity", nullable = false)
     private int totalQuantity;
@@ -55,15 +55,15 @@ public class Order {
     private List<OrderItem> orderItems;
 
     private Order(String orderNo, Marketplace marketplace, LocalDateTime orderDate, 
-                  String username, String shippingProvince, String shippingCity, 
+                  String username, String province, String city,
                   LocalDateTime completedDate) {
         this.id = UUID.randomUUID();
         this.orderNo = orderNo;
         this.marketplace = marketplace;
         this.orderDate = orderDate;
         this.username = username;
-        this.shippingProvince = shippingProvince;
-        this.shippingCity = shippingCity;
+        this.province = province;
+        this.city = city;
         this.totalQuantity = 0;
         this.totalAmount = BigDecimal.ZERO;
         this.completedDate = completedDate;
@@ -72,9 +72,9 @@ public class Order {
 
     public static Order create(String orderNo, Marketplace marketplace,
                                LocalDateTime orderDate, String username,
-                               String shippingProvince, String shippingCity,
+                               String province, String city,
                                LocalDateTime completedDate) {
-        return new Order(orderNo, marketplace, orderDate, username, shippingProvince, shippingCity, completedDate);
+        return new Order(orderNo, marketplace, orderDate, username, province, city, completedDate);
     }
 
     public OrderItem addOrderItem(String sku, String name, BigDecimal price, int quantity) {

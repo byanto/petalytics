@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -15,13 +16,13 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
 
     @Query("""
         SELECT new com.budiyanto.petalytics.petalyticsbackend.domain.dto.LocationSummaryDto(
-                o.shippingProvince, o.shippingCity, COUNT(o), SUM(o.totalAmount)
+                o.province, o.city, COUNT(o), SUM(o.totalAmount)
         )
         FROM Order o
-        GROUP BY o.shippingProvince, o.shippingCity
-        ORDER BY o.shippingProvince, o.shippingCity ASC
+        GROUP BY o.province, o.city
+        ORDER BY o.province, o.city ASC
     """)
-    List<LocationSummaryDto> retrieveOrderSummaryByLocation();
+    List<LocationSummaryDto> findOrderSummaryByLocation();
 
     @Query("""
         SELECT new com.budiyanto.petalytics.petalyticsbackend.domain.dto.ChannelSummaryDto(
@@ -31,5 +32,9 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
         GROUP BY o.marketplace
         ORDER BY o.marketplace ASC
     """)
-    List<ChannelSummaryDto> retrieveOrderSummaryByChannel();
+    List<ChannelSummaryDto> findOrderSummaryByChannel();
+
+
+    @Query("SELECT o.orderNo FROM Order o WHERE o.orderNo IN :orderNos")
+    List<String> findExistingOrderNosFromGivenList(List<String> orderNos);
 }

@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: petalytics-backend
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5433/petalytics
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate # Strictly validate! Flyway handles schema creation.
+    show-sql: false
+  flyway:
+    enabled: true

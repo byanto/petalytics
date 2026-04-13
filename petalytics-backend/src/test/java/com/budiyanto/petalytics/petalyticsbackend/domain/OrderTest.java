@@ -25,12 +25,12 @@ class OrderTest {
             String username = "testuser";
             LocalDateTime orderDate = LocalDateTime.now();
             LocalDateTime completedDate = orderDate.plusDays(5);
-            String shippingProvince = "Sumatera Utara";
-            String shippingCity = "Kota Medan";
+            String province = "Sumatera Utara";
+            String city = "Kota Medan";
             Marketplace marketplace = Marketplace.SHOPEE;
 
             // When
-            Order order = Order.create(orderNo, marketplace, orderDate, username, shippingProvince, shippingCity, completedDate);
+            Order order = Order.create(orderNo, marketplace, orderDate, username, province, city, completedDate);
 
             // Then
             then(order).isNotNull();
@@ -39,8 +39,8 @@ class OrderTest {
             then(order.getMarketplace()).isEqualTo(marketplace);
             then(order.getOrderDate()).isEqualTo(orderDate);
             then(order.getUsername()).isEqualTo(username);
-            then(order.getShippingProvince()).isEqualTo(shippingProvince);
-            then(order.getShippingCity()).isEqualTo(shippingCity);
+            then(order.getProvince()).isEqualTo(province);
+            then(order.getCity()).isEqualTo(city);
             then(order.getTotalQuantity()).isEqualTo(0);
             then(order.getTotalAmount()).isEqualTo(BigDecimal.ZERO);
             then(order.getCompletedDate()).isEqualTo(completedDate);

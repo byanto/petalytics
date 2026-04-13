@@ -17,10 +17,10 @@ public class AnalyticsService {
     private final OrderRepository orderRepository;
 
     public List<LocationSummaryDto> retrieveOrderSummaryByLocation() {
-        return orderRepository.retrieveOrderSummaryByLocation();
+        return orderRepository.findOrderSummaryByLocation();
     }
 
     public List<ChannelSummaryDto> retrieveOrderSummaryByChannel() {
-        return orderRepository.retrieveOrderSummaryByChannel();
+        return orderRepository.findOrderSummaryByChannel();
     }
 }

@@ -107,15 +107,15 @@ class OrderRepositoryTest {
         void given_existingOrders_when_retrieveOrderSummaryByLocation_then_returnsAggregatedMetrics() {
             // Given (handled by @BeforeEach)
             // When
-            List<LocationSummaryDto> result = orderRepository.retrieveOrderSummaryByLocation();
+            List<LocationSummaryDto> result = orderRepository.findOrderSummaryByLocation();
 
             // Then
             then(result).hasSize(3);
-            then(result.getFirst().shippingProvince()).isEqualTo("Sumatera Selatan");
+            then(result.getFirst().province()).isEqualTo("Sumatera Selatan");
             LocationSummaryDto summary = result.stream().filter(
-                    r -> r.shippingProvince().equals("Sumatera Utara") && r.shippingCity().equals("Kota Medan")
+                    r -> r.province().equals("Sumatera Utara") && r.city().equals("Kota Medan")
             ).findFirst().orElseThrow();
-            then(summary.shippingProvince()).isEqualTo("Sumatera Utara");
+            then(summary.province()).isEqualTo("Sumatera Utara");
             then(summary.totalOrders()).isEqualTo(2);
             then(summary.totalRevenue()).isEqualByComparingTo("13000");
         }
@@ -125,7 +125,7 @@ class OrderRepositoryTest {
         void given_existingOrders_when_retrieveOrderSummaryByChannel_then_returnsAggregatedMetrics() {
             // Given (handled by @BeforeEach)
             // When
-            List<ChannelSummaryDto> result = orderRepository.retrieveOrderSummaryByChannel();
+            List<ChannelSummaryDto> result = orderRepository.findOrderSummaryByChannel();
 
             // Then
             then(result).hasSize(2);

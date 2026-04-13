@@ -5,15 +5,15 @@ CREATE TABLE orders (
     marketplace VARCHAR(50) NOT NULL,
     order_date TIMESTAMP NOT NULL,
     username VARCHAR(255),
-    shipping_province VARCHAR(255) NOT NULL,
-    shipping_city VARCHAR(255) NOT NULL,
+    province VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
     total_quantity INTEGER NOT NULL,
     total_amount DECIMAL(19, 2) NOT NULL,
     completed_date TIMESTAMP
 );
 
-CREATE INDEX idx_order_province ON orders(shipping_province);
-CREATE INDEX idx_order_city ON orders(shipping_city);
+CREATE INDEX idx_order_province ON orders(province);
+CREATE INDEX idx_order_city ON orders(city);
 
 CREATE TABLE order_items (
     id UUID PRIMARY KEY,

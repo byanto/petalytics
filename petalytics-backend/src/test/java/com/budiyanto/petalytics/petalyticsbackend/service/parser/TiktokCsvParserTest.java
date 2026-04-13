@@ -41,8 +41,8 @@ class TiktokCsvParserTest {
 
         Order firstOrder = orders.getFirst();
         then(firstOrder.getOrderNo()).isEqualTo("2601020X4SFPSA");
-        then(firstOrder.getShippingCity()).isEqualTo("KOTA MEDAN");
-        then(firstOrder.getShippingProvince()).isEqualTo("SUMATERA UTARA");
+        then(firstOrder.getCity()).isEqualTo("KOTA MEDAN");
+        then(firstOrder.getProvince()).isEqualTo("SUMATERA UTARA");
         then(firstOrder.getUsername()).isEqualTo("kakduha02");
         then(firstOrder.getOrderItems()).hasSize(1);
         then(firstOrder.getOrderItems().getFirst().getSku()).isEqualTo("MUKENA ANAK ASYIFA-HITAM");
@@ -51,8 +51,8 @@ class TiktokCsvParserTest {
 
         Order secondOrder = orders.get(1);
         then(secondOrder.getOrderNo()).isEqualTo("2601020PYPM3P1");
-        then(secondOrder.getShippingCity()).isEqualTo("KOTA MEDAN");
-        then(secondOrder.getShippingProvince()).isEqualTo("SUMATERA UTARA");
+        then(secondOrder.getCity()).isEqualTo("KOTA MEDAN");
+        then(secondOrder.getProvince()).isEqualTo("SUMATERA UTARA");
         then(secondOrder.getUsername()).isEqualTo("ucisalsaafiqa291417");
         then(secondOrder.getOrderItems()).hasSize(2);
         then(secondOrder.getOrderItems().getFirst().getSku()).isEqualTo("JL0012-SAUDIA-PUTIH #03");
@@ -61,8 +61,8 @@ class TiktokCsvParserTest {
 
         Order thirdOrder = orders.getLast();
         then(thirdOrder.getOrderNo()).isEqualTo("2601020U0XPS4G");
-        then(thirdOrder.getShippingCity()).isEqualTo("KOTA PEKAN BARU");
-        then(thirdOrder.getShippingProvince()).isEqualTo("RIAU");
+        then(thirdOrder.getCity()).isEqualTo("KOTA PEKAN BARU");
+        then(thirdOrder.getProvince()).isEqualTo("RIAU");
         then(thirdOrder.getUsername()).isEqualTo("tarytary123456");
         then(thirdOrder.getOrderItems()).hasSize(4);
         then(thirdOrder.getOrderItems().getFirst().getSku()).isEqualTo("TURBAN DENISA-FANTA");

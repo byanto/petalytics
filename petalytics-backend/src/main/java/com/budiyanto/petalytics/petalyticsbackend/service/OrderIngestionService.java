@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -41,7 +43,23 @@ public class OrderIngestionService {
             throw new IllegalArgumentException("No CSV parser found for marketplace: " + marketplace);
         }
 
-        List<Order> orders = parser.parse(inputStream);
-        orderRepository.saveAll(orders);
+        List<Order> parsedOrders = parser.parse(inputStream);
+        if (parsedOrders.isEmpty()) {
+            return;
+        }
+
+        // Handle existing duplicate orders, remove them before save to database
+        // 1. Extract all Order Numbers from the parsed CV
+        List<String> parsedOrderNos = parsedOrders.stream().map(Order::getOrderNo).toList();
+
+        // 2. Fetch existing Order Numbers from the DB in a single, fast batch query
+        Set<String> existingOrderNos = new HashSet<>(orderRepository.findExistingOrderNosFromGivenList(parsedOrderNos));
+
+        // 3. Filter out any orders that already exist in the database
+        List<Order> ordersToSave = parsedOrders.stream()
+                        .filter(order -> !existingOrderNos.contains(order.getOrderNo()))
+                        .toList();
+
+        orderRepository.saveAll(ordersToSave);
     }
 }
