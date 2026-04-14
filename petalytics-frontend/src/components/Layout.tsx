@@ -8,7 +8,6 @@ import {
     Settings,
     ChevronLeft,
     ChevronRight,
-    BarChart3
 } from 'lucide-react';
 import type { Screen } from '../types';
 // import { motion, AnimatePresence } from 'motion/react';
@@ -30,16 +29,14 @@ export default function Layout({ children, currentScreen, onNavigate }: LayoutPr
             >
                 <button
                     onClick={() => setIsCollapsed(!isCollapsed)}
-                    className="absolute -right-3 top-10 bg-surface-container-lowest border border-outline-variant/20 rounded-full p-1 shadow-md z-50 hover:bg-surface-container-low transition-all"
+                    className="absolute -right-3 top-10 bg-surface-container-lowest border border-outline-variant/20 rounded-full p-1 shadow-md z-50 hover:bg-surface-container-low transition-all cursor-pointer"
                 >
                     {isCollapsed ? <ChevronRight size={14} className="text-on-surface-variant" /> : <ChevronLeft size={14} className="text-on-surface-variant" />}
                 </button>
 
                 <div className="px-6 mb-8">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white shrink-0">
-                            <BarChart3 size={20} />
-                        </div>
+                        <img src="/favicon.svg" alt="Petalytics Logo" className="w-10 h-10 shrink-0 relative -top-1" />
                         {!isCollapsed && (
                             <div className="sidebar-text">
                                 <h1 className="text-lg font-extrabold text-primary leading-none">Petalytics</h1>
@@ -52,7 +49,7 @@ export default function Layout({ children, currentScreen, onNavigate }: LayoutPr
                 <nav className="flex-1 px-4 space-y-1">
                     <button
                         onClick={() => onNavigate('dashboard')}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                        className={`w-full flex items-center cursor-pointer gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                             currentScreen === 'dashboard'
                                 ? 'text-primary font-bold border-r-2 border-primary bg-primary/5'
                                 : 'text-on-surface-variant hover:text-primary hover:translate-x-1'
@@ -63,7 +60,7 @@ export default function Layout({ children, currentScreen, onNavigate }: LayoutPr
                     </button>
                     <button
                         onClick={() => onNavigate('data-import')}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                        className={`w-full flex items-center cursor-pointer gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                             currentScreen === 'data-import'
                                 ? 'text-primary font-bold border-r-2 border-primary bg-primary/5'
                                 : 'text-on-surface-variant hover:text-primary hover:translate-x-1'
@@ -75,11 +72,17 @@ export default function Layout({ children, currentScreen, onNavigate }: LayoutPr
                 </nav>
 
                 <div className="px-4 mt-auto space-y-1">
-                    <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:text-primary transition-colors">
+                    <button 
+                        onClick={() => alert("Help Center integration coming in V2!")}
+                        className="w-full flex items-center cursor-pointer gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:text-primary transition-colors"
+                    >
                         <HelpCircle size={20} />
                         {!isCollapsed && <span className="text-sm font-medium">Help Center</span>}
                     </button>
-                    <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:text-primary transition-colors">
+                    <button 
+                        onClick={() => alert("Authentication and Session Management coming in V2!")}
+                        className="w-full flex items-center cursor-pointer gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:text-primary transition-colors"
+                    >
                         <LogOut size={20} />
                         {!isCollapsed && <span className="text-sm font-medium">Log Out</span>}
                     </button>
@@ -93,18 +96,27 @@ export default function Layout({ children, currentScreen, onNavigate }: LayoutPr
                         {/* Breadcrumbs or search could go here */}
                     </div>
                     <div className="flex items-center gap-4">
-                        <button className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+                        <button 
+                            onClick={() => alert("Notifications coming in V2!")}
+                            className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors cursor-pointer"
+                        >
                             <Bell size={20} />
                         </button>
-                        <button className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+                        <button 
+                            onClick={() => alert("Settings panel coming in V2!")}
+                            className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors cursor-pointer"
+                        >
                             <Settings size={20} />
                         </button>
                         <div className="flex items-center gap-3 pl-4 border-l border-outline-variant/20">
                             <div className="text-right hidden sm:block">
-                                <p className="text-xs font-bold text-on-surface leading-none">Alex Sterling</p>
+                                <p className="text-xs font-bold text-on-surface leading-none">Budi Yanto</p>
                                 <p className="text-[10px] text-on-surface-variant font-inter">Admin</p>
                             </div>
-                            <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-surface-container-low">
+                            <div 
+                                onClick={() => alert("User profile management coming in V2!")}
+                                className="w-8 h-8 rounded-full overflow-hidden border-2 border-surface-container-low cursor-pointer"
+                            >
                                 <img
                                     src="https://picsum.photos/seed/user/100/100"
                                     alt="User profile"

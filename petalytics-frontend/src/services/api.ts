@@ -11,12 +11,22 @@ export const apiClient = axios.create({
 
 // 2. Define our specific API calls
 export const analyticsService = {
-    getLocationSummary: async (): Promise<LocationSummary[]> => {
-        const response = await apiClient.get<LocationSummary[]>('/analytics/location-summary');
+    getLocationSummary: async (marketplace?: string | null, startDate?: string | null, endDate?: string | null): Promise<LocationSummary[]> => {
+        const params: Record<string, string> = {};
+        if (marketplace) params.marketplace = marketplace;
+        if (startDate) params.startDate = startDate;
+        if (endDate) params.endDate = endDate;
+
+        const response = await apiClient.get<LocationSummary[]>('/analytics/location-summary', { params });
         return response.data;
     },
-    getChannelSummary: async (): Promise<ChannelSummary[]> => {
-        const response = await apiClient.get<ChannelSummary[]>('/analytics/channel-summary');
+    getChannelSummary: async (marketplace?: string | null, startDate?: string | null, endDate?: string | null): Promise<ChannelSummary[]> => {
+        const params: Record<string, string> = {};
+        if (marketplace) params.marketplace = marketplace;
+        if (startDate) params.startDate = startDate;
+        if (endDate) params.endDate = endDate;
+
+        const response = await apiClient.get<ChannelSummary[]>('/analytics/channel-summary', { params });
         return response.data;
     }
 };
