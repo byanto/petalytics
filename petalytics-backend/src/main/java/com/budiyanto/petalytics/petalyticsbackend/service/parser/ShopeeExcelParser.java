@@ -2,6 +2,8 @@ package com.budiyanto.petalytics.petalyticsbackend.service.parser;
 
 import com.budiyanto.petalytics.petalyticsbackend.domain.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.domain.Order;
+import com.budiyanto.petalytics.petalyticsbackend.service.LocationNormalizerService;
+import lombok.RequiredArgsConstructor;
 import org.dhatim.fastexcel.reader.Cell;
 import org.dhatim.fastexcel.reader.CellType;
 import org.dhatim.fastexcel.reader.ReadableWorkbook;
@@ -18,9 +20,11 @@ import java.util.*;
 import java.util.stream.Stream;
 
 @Component
+@RequiredArgsConstructor
 public class ShopeeExcelParser implements MarketplaceCsvParser {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private final LocationNormalizerService locationNormalizerService;
 
     @Override
     public Marketplace getSupportedMarketplace() {
@@ -63,8 +67,8 @@ public class ShopeeExcelParser implements MarketplaceCsvParser {
                                 Marketplace.SHOPEE,
                                 getDateTimeValue(row, "Waktu Pesanan Dibuat", headerMap),
                                 getCellValue(row, "Username (Pembeli)", headerMap),
-                                getCellValue(row, "Provinsi", headerMap),
-                                getCellValue(row, "Kota/Kabupaten", headerMap),
+                                locationNormalizerService.normalizeProvince(getCellValue(row, "Provinsi", headerMap)),
+                                locationNormalizerService.normalizeCity(getCellValue(row, "Kota/Kabupaten", headerMap)),
                                 getDateTimeValue(row, "Waktu Pesanan Selesai", headerMap)
                         );
                     });

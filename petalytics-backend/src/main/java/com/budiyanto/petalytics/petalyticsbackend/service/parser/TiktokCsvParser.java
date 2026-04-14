@@ -2,6 +2,8 @@ package com.budiyanto.petalytics.petalyticsbackend.service.parser;
 
 import com.budiyanto.petalytics.petalyticsbackend.domain.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.domain.Order;
+import com.budiyanto.petalytics.petalyticsbackend.service.LocationNormalizerService;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -24,9 +26,11 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class TiktokCsvParser implements MarketplaceCsvParser {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    private final LocationNormalizerService locationNormalizerService;
 
     @Override
     public Marketplace getSupportedMarketplace() {
@@ -58,8 +62,8 @@ public class TiktokCsvParser implements MarketplaceCsvParser {
                             Marketplace.TIKTOK,
                             LocalDateTime.parse(record.get("Created Time"), DATE_FORMATTER),
                             record.get("Buyer Username"),
-                            record.get("Province"),
-                            record.get("Regency and City"),
+                            locationNormalizerService.normalizeProvince(record.get("Province")),
+                            locationNormalizerService.normalizeCity(record.get("Regency and City")),
                             LocalDateTime.parse(record.get("Delivered Time"), DATE_FORMATTER)
                     );
                 });

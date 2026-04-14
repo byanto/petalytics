@@ -1,8 +1,14 @@
 package com.budiyanto.petalytics.petalyticsbackend.service.parser;
 
 import com.budiyanto.petalytics.petalyticsbackend.domain.Order;
+import com.budiyanto.petalytics.petalyticsbackend.service.LocationNormalizerService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -11,11 +17,19 @@ import java.util.List;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 
 @DisplayName("Shopee CSV Parser Tests")
+@ExtendWith(MockitoExtension.class)
 class ShopeeCsvParserTest {
 
-    private final ShopeeExcelParser shopeeExcelParser = new ShopeeExcelParser();
+    @Mock
+    private LocationNormalizerService locationNormalizer;
+
+    @InjectMocks
+    private ShopeeExcelParser shopeeExcelParser;
 
     @Test
     @DisplayName("Given a valid Shopee CSV, when parse, then returns correctly mapped orders")
@@ -23,6 +37,9 @@ class ShopeeCsvParserTest {
         // Given
         InputStream inputStream = getClass().getResourceAsStream("/shopee-dummy-data.xlsx");
         then(inputStream).as("Dummy Excel file not found in src/test/resources!").isNotNull();
+
+        given(locationNormalizer.normalizeProvince(any())).willAnswer(returnsFirstArg());
+        given(locationNormalizer.normalizeCity(any())).willAnswer(returnsFirstArg());
 
         // When
         List<Order> orders = shopeeExcelParser.parse(inputStream);

@@ -1,8 +1,14 @@
 package com.budiyanto.petalytics.petalyticsbackend.service.parser;
 
 import com.budiyanto.petalytics.petalyticsbackend.domain.Order;
+import com.budiyanto.petalytics.petalyticsbackend.service.LocationNormalizerService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -11,11 +17,19 @@ import java.util.List;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 @DisplayName("Tiktok CSV Parser Tests")
+@ExtendWith(MockitoExtension.class)
 class TiktokCsvParserTest {
 
-    private final TiktokCsvParser tiktokCsvParser = new TiktokCsvParser();
+    @Mock
+    private LocationNormalizerService locationNormalizer;
+
+    @InjectMocks
+    private TiktokCsvParser tiktokCsvParser;
 
     @Test
     @DisplayName("Given a valid Tiktok CSV, when parse, then returns correctly mapped orders")
@@ -32,6 +46,9 @@ class TiktokCsvParserTest {
             2601020U0XPS4G, 04/01/2026 11:57:38, AliMaMa - TURBAN PITA POLOS - Hijab Anak Bayi, TURBAN PITA POLOS-MAROON, 32450, 5, tarytary123456, KOTA PEKAN BARU, RIAU, 09/01/2026 11:57:38              
         """;
         InputStream inputStream = new ByteArrayInputStream(csvContent.getBytes(StandardCharsets.UTF_8));
+
+        given(locationNormalizer.normalizeProvince(any())).willAnswer(returnsFirstArg());
+        given(locationNormalizer.normalizeCity(any())).willAnswer(returnsFirstArg());
 
         // When
         List<Order> orders = tiktokCsvParser.parse(inputStream);
