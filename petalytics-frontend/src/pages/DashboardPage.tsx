@@ -309,7 +309,7 @@ export default function DashboardPage() {
                                         nameKey="name"
                                         stroke="none"
                                     />
-                                    <Tooltip formatter={(value: number) => platformMetric === 'sales' ? `IDR ${value.toLocaleString()}` : value.toLocaleString()} />
+                                    <Tooltip formatter={(value: any) => platformMetric === 'sales' ? `IDR ${Number(value).toLocaleString('id-ID')}` : Number(value).toLocaleString('id-ID')} />
                                 </PieChart>
                             </ResponsiveContainer>
                             <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
