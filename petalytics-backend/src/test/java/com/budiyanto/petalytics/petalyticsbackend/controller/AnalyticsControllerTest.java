@@ -41,7 +41,7 @@ public class AnalyticsControllerTest {
             LocationSummaryDto summary1 = new LocationSummaryDto("Sumatera Selatan", "Kota Palembang", 20L, new BigDecimal("300"));
             LocationSummaryDto summary2 = new LocationSummaryDto("Sumatera Utara", "Kota Medan", 10L, new BigDecimal("200"));
 
-            given(analyticsService.retrieveOrderSummaryByLocation()).willReturn(List.of(summary1, summary2));
+            given(analyticsService.retrieveOrderSummaryByLocation(null, null, null)).willReturn(List.of(summary1, summary2));
 
             // When & Then
             mockMvc.perform(get("/api/analytics/location-summary"))
@@ -64,7 +64,7 @@ public class AnalyticsControllerTest {
             ChannelSummaryDto summary1 = new ChannelSummaryDto(Marketplace.SHOPEE, 15L, new BigDecimal("250"));
             ChannelSummaryDto summary2 = new ChannelSummaryDto(Marketplace.TIKTOK, 25L, new BigDecimal("500"));
 
-            given(analyticsService.retrieveOrderSummaryByChannel()).willReturn(List.of(summary1, summary2));
+            given(analyticsService.retrieveOrderSummaryByChannel(null, null, null)).willReturn(List.of(summary1, summary2));
 
             // When & Then
             mockMvc.perform(get("/api/analytics/channel-summary"))
