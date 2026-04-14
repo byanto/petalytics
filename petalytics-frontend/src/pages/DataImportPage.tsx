@@ -152,7 +152,7 @@ export default function DataImportPage() {
                 <div className="mt-8 flex gap-8">
                     <div className="flex items-center gap-2 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">
                         <CheckCircle2 size={14} className="text-primary" />
-                        Max 5MB
+                        Max 50MB
                     </div>
                     <div className="flex items-center gap-2 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">
                         <CheckCircle2 size={14} className="text-primary" />
