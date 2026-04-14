@@ -2,8 +2,8 @@
 
 **Petalytics** (from *Peta* - Indonesian for Map) is a pragmatic backend solution designed to solve a common problem in Indonesian e-commerce: **Wasted ad spend due to lack of geographic customer insights.**
 
-[![CI Pipeline](https://github.com/YOUR_GITHUB_USERNAME/petalytics/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_GITHUB_USERNAME/petalytics/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/Coverage-92%25-brightgreen.svg)](https://github.com/YOUR_GITHUB_USERNAME/petalytics)
+[![CI Pipeline](https://github.com/byanto/petalytics/actions/workflows/ci.yml/badge.svg)](https://github.com/byanto/petalytics/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/badge/Coverage-92%25-brightgreen.svg)](https://github.com/byanto/petalytics)
 [![Java 21](https://img.shields.io/badge/Java-21-blue.svg)](https://jdk.java.net/21/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![React](https://img.shields.io/badge/React-19-61dafb.svg)](https://reactjs.org/)
