@@ -1,5 +1,6 @@
-package com.budiyanto.petalytics.petalyticsbackend.service.parser;
+package com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.parser;
 
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.CsvParserPort;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
 import com.budiyanto.petalytics.petalyticsbackend.service.LocationNormalizerService;
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
-public class ShopeeExcelParser implements MarketplaceCsvParser {
+public class ShopeeExcelParser implements CsvParserPort {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private final LocationNormalizerService locationNormalizerService;

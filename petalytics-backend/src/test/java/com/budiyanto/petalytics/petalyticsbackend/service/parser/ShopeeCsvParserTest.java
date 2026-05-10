@@ -1,8 +1,14 @@
 package com.budiyanto.petalytics.petalyticsbackend.service.parser;
 
-import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
-import com.budiyanto.petalytics.petalyticsbackend.service.LocationNormalizerService;
-import org.junit.jupiter.api.BeforeEach;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+
+import java.io.InputStream;
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,16 +16,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.parser.ShopeeExcelParser;
+import com.budiyanto.petalytics.petalyticsbackend.service.LocationNormalizerService;
 
 @DisplayName("Shopee CSV Parser Tests")
 @ExtendWith(MockitoExtension.class)

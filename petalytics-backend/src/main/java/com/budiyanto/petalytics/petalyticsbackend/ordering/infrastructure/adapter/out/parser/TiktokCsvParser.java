@@ -1,5 +1,6 @@
-package com.budiyanto.petalytics.petalyticsbackend.service.parser;
+package com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.parser;
 
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.CsvParserPort;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
 import com.budiyanto.petalytics.petalyticsbackend.service.LocationNormalizerService;
@@ -26,7 +27,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class TiktokCsvParser implements MarketplaceCsvParser {
+public class TiktokCsvParser implements CsvParserPort {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     private final LocationNormalizerService locationNormalizerService;
