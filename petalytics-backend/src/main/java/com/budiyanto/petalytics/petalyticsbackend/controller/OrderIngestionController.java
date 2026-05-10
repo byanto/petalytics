@@ -1,7 +1,8 @@
 package com.budiyanto.petalytics.petalyticsbackend.controller;
 
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.service.OrderIngestionService;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
-import com.budiyanto.petalytics.petalyticsbackend.service.OrderIngestionService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

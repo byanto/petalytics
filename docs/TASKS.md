@@ -12,9 +12,9 @@ Work in Micro-Tasks. Commit after each Green/Refactor cycle.
 - [X] Task 2.2: Ensure the Domain contains NO Spring dependencies. Refactor to use Java 21 features if applicable.
 
 ## Phase 3: Ports & Application (Ordering)
-- [ ] Task 3.1: Define `IngestOrderUseCase` (Inbound Port) in `ordering.application.port.in`.
-- [ ] Task 3.2: Define `OrderRepositoryPort` and `CsvParserPort` (Outbound Ports) in `ordering.application.port.out`.
-- [ ] Task 3.3: Move/Refactor `OrderIngestionService` to implement `IngestOrderUseCase` using only the outbound ports.
+- [X] Task 3.1: Define `IngestOrderUseCase` (Inbound Port) in `ordering.application.port.in`.
+- [X] Task 3.2: Define `OrderRepositoryPort` and `CsvParserPort` (Outbound Ports) in `ordering.application.port.out`.
+- [X] Task 3.3: Move/Refactor `OrderIngestionService` to implement `IngestOrderUseCase` using only the outbound ports.
 
 ## Phase 4: Adapters (Ordering)
 - [ ] Task 4.1: Move `OrderIngestionController` to `ordering.infrastructure.adapter.in.web`.

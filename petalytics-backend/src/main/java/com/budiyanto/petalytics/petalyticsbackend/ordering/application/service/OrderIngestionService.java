@@ -1,11 +1,4 @@
-package com.budiyanto.petalytics.petalyticsbackend.service;
-
-import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
-import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
-import com.budiyanto.petalytics.petalyticsbackend.repository.OrderRepository;
-import com.budiyanto.petalytics.petalyticsbackend.service.parser.MarketplaceCsvParser;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+package com.budiyanto.petalytics.petalyticsbackend.ordering.application.service;
 
 import java.io.InputStream;
 import java.util.HashSet;
@@ -15,17 +8,26 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.in.IngestOrderUseCase;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.CsvParserPort;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.OrderRepositoryPort;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
+
 @Service
 @Transactional(readOnly = true)
-public class OrderIngestionService {
+public class OrderIngestionService implements IngestOrderUseCase {
 
-    private final OrderRepository orderRepository;
-    private final Map<Marketplace, MarketplaceCsvParser> parserRegistry;
+    private final OrderRepositoryPort orderRepository;
+    private final Map<Marketplace, CsvParserPort> parserRegistry;
 
-    public OrderIngestionService(OrderRepository orderRepository, List<MarketplaceCsvParser> parsers) {
+    public OrderIngestionService(OrderRepositoryPort orderRepository, List<CsvParserPort> parsers) {
         this.orderRepository = orderRepository;
         this.parserRegistry = parsers.stream()
-                .collect(Collectors.toMap(MarketplaceCsvParser::getSupportedMarketplace, Function.identity()));
+                .collect(Collectors.toMap(CsvParserPort::getSupportedMarketplace, Function.identity()));
     }
 
     @Transactional
@@ -38,7 +40,7 @@ public class OrderIngestionService {
             throw new IllegalArgumentException("Marketplace cannot be null");
         }
 
-        MarketplaceCsvParser parser = parserRegistry.get(marketplace);
+        CsvParserPort parser = parserRegistry.get(marketplace);
         if (parser == null) {
             throw new IllegalArgumentException("No CSV parser found for marketplace: " + marketplace);
         }

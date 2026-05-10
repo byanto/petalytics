@@ -1,5 +1,6 @@
 package com.budiyanto.petalytics.petalyticsbackend.service;
 
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.service.OrderIngestionService;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
 import com.budiyanto.petalytics.petalyticsbackend.repository.OrderRepository;
