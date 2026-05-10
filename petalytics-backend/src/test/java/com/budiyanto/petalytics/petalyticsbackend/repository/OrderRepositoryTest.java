@@ -4,6 +4,7 @@ import com.budiyanto.petalytics.petalyticsbackend.domain.dto.ChannelSummaryDto;
 import com.budiyanto.petalytics.petalyticsbackend.domain.dto.LocationSummaryDto;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.persistence.SpringDataOrderRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,10 +29,10 @@ import static org.assertj.core.api.BDDAssertions.then;
 class OrderRepositoryTest {
 
     private final TestEntityManager entityManager;
-    private final OrderRepository orderRepository;
+    private final SpringDataOrderRepository orderRepository;
 
     @Autowired
-    OrderRepositoryTest(TestEntityManager entityManager, OrderRepository orderRepository){
+    OrderRepositoryTest(TestEntityManager entityManager, SpringDataOrderRepository orderRepository){
         this.entityManager = entityManager;
         this.orderRepository = orderRepository;
     }

@@ -3,7 +3,8 @@ package com.budiyanto.petalytics.petalyticsbackend.service;
 import com.budiyanto.petalytics.petalyticsbackend.domain.dto.ChannelSummaryDto;
 import com.budiyanto.petalytics.petalyticsbackend.domain.dto.LocationSummaryDto;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
-import com.budiyanto.petalytics.petalyticsbackend.repository.OrderRepository;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.persistence.SpringDataOrderRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AnalyticsService {
 
-    private final OrderRepository orderRepository;
+    private final SpringDataOrderRepository orderRepository;
 
     public List<LocationSummaryDto> retrieveOrderSummaryByLocation(Marketplace marketplace, LocalDateTime startDate, LocalDateTime endDate) {
         return orderRepository.findOrderSummaryByLocation(marketplace, startDate, endDate);

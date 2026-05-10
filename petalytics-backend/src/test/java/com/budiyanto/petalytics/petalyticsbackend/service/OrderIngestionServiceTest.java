@@ -1,9 +1,11 @@
 package com.budiyanto.petalytics.petalyticsbackend.service;
 
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.CsvParserPort;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.OrderRepositoryPort;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.application.service.OrderIngestionService;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
-import com.budiyanto.petalytics.petalyticsbackend.repository.OrderRepository;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.persistence.SpringDataOrderRepository;
 import com.budiyanto.petalytics.petalyticsbackend.service.parser.MarketplaceCsvParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,10 +36,10 @@ import static org.mockito.Mockito.verify;
 class OrderIngestionServiceTest {
 
     @Mock
-    private MarketplaceCsvParser shopeeCsvParser;
+    private CsvParserPort shopeeCsvParser;
 
     @Mock
-    private OrderRepository orderRepository;
+    private OrderRepositoryPort orderRepositoryPort;
 
     private OrderIngestionService orderIngestionService;
 
@@ -48,7 +50,7 @@ class OrderIngestionServiceTest {
     void setUp() {
         // We stub the marketplace FIRST, then manually inject it into the real constructor!
         given(shopeeCsvParser.getSupportedMarketplace()).willReturn(Marketplace.SHOPEE);
-        orderIngestionService = new OrderIngestionService(orderRepository, List.of(shopeeCsvParser));
+        orderIngestionService = new OrderIngestionService(orderRepositoryPort, List.of(shopeeCsvParser));
     }
 
     @Test
@@ -77,7 +79,7 @@ class OrderIngestionServiceTest {
         orderIngestionService.ingest(inputStream, Marketplace.SHOPEE);
 
         // Then
-        verify(orderRepository, times(1)).saveAll(orderListCaptor.capture());
+        verify(orderRepositoryPort, times(1)).saveAll(orderListCaptor.capture());
         List<Order> savedOrders = orderListCaptor.getValue();
         
         then(savedOrders).hasSize(1);
@@ -113,13 +115,13 @@ class OrderIngestionServiceTest {
         mockOrder2.addOrderItem("SKU 1", "Product A", new BigDecimal("25"), 10);
 
         given(shopeeCsvParser.parse(any(InputStream.class))).willReturn(List.of(mockOrder1, mockOrder2));
-        given(orderRepository.findExistingOrderNosFromGivenList(anyList())).willReturn(List.of("2601020X4SFPSA"));
+        given(orderRepositoryPort.findExistingOrderNosFromGivenList(anyList())).willReturn(List.of("2601020X4SFPSA"));
 
         // When
         orderIngestionService.ingest(inputStream, Marketplace.SHOPEE);
 
         // Then
-        verify(orderRepository, times(1)).saveAll(orderListCaptor.capture());
+        verify(orderRepositoryPort, times(1)).saveAll(orderListCaptor.capture());
         List<Order> savedOrders = orderListCaptor.getValue();
 
         then(savedOrders).hasSize(1);

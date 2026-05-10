@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.in.IngestOrderUseCase;
@@ -17,15 +16,14 @@ import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
 
-@Service
 @Transactional(readOnly = true)
 public class OrderIngestionService implements IngestOrderUseCase {
 
-    private final OrderRepositoryPort orderRepository;
+    private final OrderRepositoryPort orderRepositoryPort;
     private final Map<Marketplace, CsvParserPort> parserRegistry;
 
-    public OrderIngestionService(OrderRepositoryPort orderRepository, List<CsvParserPort> parsers) {
-        this.orderRepository = orderRepository;
+    public OrderIngestionService(OrderRepositoryPort orderRepositoryPort, List<CsvParserPort> parsers) {
+        this.orderRepositoryPort = orderRepositoryPort;
         this.parserRegistry = parsers.stream()
                 .collect(Collectors.toMap(CsvParserPort::getSupportedMarketplace, Function.identity()));
     }
@@ -55,13 +53,13 @@ public class OrderIngestionService implements IngestOrderUseCase {
         List<String> parsedOrderNos = parsedOrders.stream().map(Order::getOrderNo).toList();
 
         // 2. Fetch existing Order Numbers from the DB in a single, fast batch query
-        Set<String> existingOrderNos = new HashSet<>(orderRepository.findExistingOrderNosFromGivenList(parsedOrderNos));
+        Set<String> existingOrderNos = new HashSet<>(orderRepositoryPort.findExistingOrderNosFromGivenList(parsedOrderNos));
 
         // 3. Filter out any orders that already exist in the database
         List<Order> ordersToSave = parsedOrders.stream()
                         .filter(order -> !existingOrderNos.contains(order.getOrderNo()))
                         .toList();
 
-        orderRepository.saveAll(ordersToSave);
+        orderRepositoryPort.saveAll(ordersToSave);
     }
 }

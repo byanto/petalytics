@@ -17,8 +17,8 @@ Work in Micro-Tasks. Commit after each Green/Refactor cycle.
 - [X] Task 3.3: Move/Refactor `OrderIngestionService` to implement `IngestOrderUseCase` using only the outbound ports.
 
 ## Phase 4: Adapters (Ordering)
-- [ ] Task 4.1: Move `OrderIngestionController` to `ordering.infrastructure.adapter.in.web`.
-- [ ] Task 4.2: Move `OrderRepository` (Spring Data interface) and create `PostgresOrderRepository` adapter in `ordering.infrastructure.adapter.out.persistence`.
+- [X] Task 4.1: Move `OrderIngestionController` to `ordering.infrastructure.adapter.in.web`.
+- [X] Task 4.2: Move `OrderRepository` (Spring Data interface) and create `PostgresOrderRepository` adapter in `ordering.infrastructure.adapter.out.persistence`.
 - [ ] Task 4.3: Refactor CSV parser to implement `CsvParserPort` in `ordering.infrastructure.adapter.out.parser`.
 
 ## Phase 5: Analytics & Location

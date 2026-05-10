@@ -1,4 +1,4 @@
-package com.budiyanto.petalytics.petalyticsbackend.repository;
+package com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.persistence;
 
 import com.budiyanto.petalytics.petalyticsbackend.domain.dto.ChannelSummaryDto;
 import com.budiyanto.petalytics.petalyticsbackend.domain.dto.LocationSummaryDto;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, UUID> {
+public interface SpringDataOrderRepository extends JpaRepository<Order, UUID> {
 
     @Query("""
         SELECT new com.budiyanto.petalytics.petalyticsbackend.domain.dto.LocationSummaryDto(
