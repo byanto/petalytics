@@ -1,14 +1,14 @@
 package com.budiyanto.petalytics.petalyticsbackend.repository;
 
-import com.budiyanto.petalytics.petalyticsbackend.domain.Marketplace;
-import com.budiyanto.petalytics.petalyticsbackend.domain.Order;
 import com.budiyanto.petalytics.petalyticsbackend.domain.dto.ChannelSummaryDto;
 import com.budiyanto.petalytics.petalyticsbackend.domain.dto.LocationSummaryDto;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.yaml.snakeyaml.error.Mark;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -4,12 +4,12 @@ This document tracks the migration from Layered Architecture to Pragmatic Hexago
 Work in Micro-Tasks. Commit after each Green/Refactor cycle.
 
 ## Phase 1: Foundation Setup
-- [ ] Task 1.1: Create root bounded contexts: `ordering`, `analytics`, `location`, `common`.
-- [ ] Task 1.2: Add `MapStruct` dependency and configure it with `lombok-mapstruct-binding` in `pom.xml`.
+- [X] Task 1.1: Create root bounded contexts: `ordering`, `analytics`, `location`, `common`.
+- [X] Task 1.2: Add `MapStruct` dependency and configure it with `lombok-mapstruct-binding` in `pom.xml`.
 
 ## Phase 2: Domain Migration (Ordering)
-- [ ] Task 2.1: Move `Order`, `OrderItem`, and `Marketplace` to `ordering.domain.model`.
-- [ ] Task 2.2: Ensure the Domain contains NO Spring dependencies. Refactor to use Java 21 features if applicable.
+- [X] Task 2.1: Move `Order`, `OrderItem`, and `Marketplace` to `ordering.domain.model`.
+- [X] Task 2.2: Ensure the Domain contains NO Spring dependencies. Refactor to use Java 21 features if applicable.
 
 ## Phase 3: Ports & Application (Ordering)
 - [ ] Task 3.1: Define `IngestOrderUseCase` (Inbound Port) in `ordering.application.port.in`.

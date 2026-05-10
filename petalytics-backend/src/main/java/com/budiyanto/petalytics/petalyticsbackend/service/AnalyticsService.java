@@ -1,8 +1,8 @@
 package com.budiyanto.petalytics.petalyticsbackend.service;
 
-import com.budiyanto.petalytics.petalyticsbackend.domain.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.domain.dto.ChannelSummaryDto;
 import com.budiyanto.petalytics.petalyticsbackend.domain.dto.LocationSummaryDto;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

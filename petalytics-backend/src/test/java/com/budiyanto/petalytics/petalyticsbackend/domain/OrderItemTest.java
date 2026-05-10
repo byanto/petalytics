@@ -4,6 +4,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.OrderItem;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 

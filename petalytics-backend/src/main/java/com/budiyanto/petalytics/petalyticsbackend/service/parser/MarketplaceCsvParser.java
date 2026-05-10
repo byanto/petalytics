@@ -1,10 +1,10 @@
 package com.budiyanto.petalytics.petalyticsbackend.service.parser;
 
-import com.budiyanto.petalytics.petalyticsbackend.domain.Marketplace;
-import com.budiyanto.petalytics.petalyticsbackend.domain.Order;
-
 import java.io.InputStream;
 import java.util.List;
+
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
 
 public interface MarketplaceCsvParser {
 

@@ -1,6 +1,6 @@
 package com.budiyanto.petalytics.petalyticsbackend.service.parser;
 
-import com.budiyanto.petalytics.petalyticsbackend.domain.Order;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
 import com.budiyanto.petalytics.petalyticsbackend.service.LocationNormalizerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

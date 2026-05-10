@@ -1,7 +1,7 @@
 package com.budiyanto.petalytics.petalyticsbackend.service;
 
-import com.budiyanto.petalytics.petalyticsbackend.domain.Marketplace;
-import com.budiyanto.petalytics.petalyticsbackend.domain.Order;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
 import com.budiyanto.petalytics.petalyticsbackend.repository.OrderRepository;
 import com.budiyanto.petalytics.petalyticsbackend.service.parser.MarketplaceCsvParser;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +12,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.testcontainers.shaded.org.yaml.snakeyaml.error.Mark;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

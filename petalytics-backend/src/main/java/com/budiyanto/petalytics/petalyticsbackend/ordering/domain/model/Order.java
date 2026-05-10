@@ -1,4 +1,4 @@
-package com.budiyanto.petalytics.petalyticsbackend.domain;
+package com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model;
 
 import jakarta.persistence.*;
 import lombok.*;

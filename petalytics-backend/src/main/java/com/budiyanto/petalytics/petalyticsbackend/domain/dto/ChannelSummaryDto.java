@@ -1,8 +1,8 @@
 package com.budiyanto.petalytics.petalyticsbackend.domain.dto;
 
-import com.budiyanto.petalytics.petalyticsbackend.domain.Marketplace;
-
 import java.math.BigDecimal;
+
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 
 public record ChannelSummaryDto(
         Marketplace marketplace,

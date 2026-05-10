@@ -1,7 +1,7 @@
 package com.budiyanto.petalytics.petalyticsbackend.service.parser;
 
-import com.budiyanto.petalytics.petalyticsbackend.domain.Marketplace;
-import com.budiyanto.petalytics.petalyticsbackend.domain.Order;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
 import com.budiyanto.petalytics.petalyticsbackend.service.LocationNormalizerService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
@@ -10,7 +10,6 @@ import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;

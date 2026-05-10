@@ -1,7 +1,7 @@
 package com.budiyanto.petalytics.petalyticsbackend.service;
 
-import com.budiyanto.petalytics.petalyticsbackend.domain.Marketplace;
-import com.budiyanto.petalytics.petalyticsbackend.domain.Order;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
 import com.budiyanto.petalytics.petalyticsbackend.repository.OrderRepository;
 import com.budiyanto.petalytics.petalyticsbackend.service.parser.MarketplaceCsvParser;
 import org.springframework.stereotype.Service;

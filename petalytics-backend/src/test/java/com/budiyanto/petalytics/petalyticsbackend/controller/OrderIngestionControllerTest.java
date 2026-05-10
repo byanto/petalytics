@@ -1,6 +1,6 @@
 package com.budiyanto.petalytics.petalyticsbackend.controller;
 
-import com.budiyanto.petalytics.petalyticsbackend.domain.Marketplace;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.service.OrderIngestionService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
