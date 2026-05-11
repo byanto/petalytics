@@ -1,9 +1,11 @@
-package com.budiyanto.petalytics.petalyticsbackend.controller;
+package com.budiyanto.petalytics.petalyticsbackend.analytics.infrastructure.adapter.in.web;
 
-import com.budiyanto.petalytics.petalyticsbackend.domain.dto.ChannelSummaryDto;
-import com.budiyanto.petalytics.petalyticsbackend.domain.dto.LocationSummaryDto;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.application.port.in.RetrieveAnalyticsUseCase;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.application.service.AnalyticsService;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.ChannelSummaryDto;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.LocationSummaryDto;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
-import com.budiyanto.petalytics.petalyticsbackend.service.AnalyticsService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,14 +21,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AnalyticsController {
 
-    private final AnalyticsService analyticsService;
+    private final RetrieveAnalyticsUseCase retrieveAnalyticsUseCase;
 
     @GetMapping("/location-summary")
     public ResponseEntity<List<LocationSummaryDto>> retrieveOrderSummaryByLocation(
             @RequestParam(required = false) Marketplace marketplace,
             @RequestParam(required = false)LocalDateTime startDate,
             @RequestParam(required = false)LocalDateTime endDate) {
-        return ResponseEntity.ok(analyticsService.retrieveOrderSummaryByLocation(marketplace, startDate, endDate));
+        return ResponseEntity.ok(retrieveAnalyticsUseCase.retrieveOrderSummaryByLocation(marketplace, startDate, endDate));
     }
 
     @GetMapping("/channel-summary")
@@ -34,7 +36,7 @@ public class AnalyticsController {
             @RequestParam(required = false) Marketplace marketplace,
             @RequestParam(required = false)LocalDateTime startDate,
             @RequestParam(required = false)LocalDateTime endDate) {
-        return ResponseEntity.ok(analyticsService.retrieveOrderSummaryByChannel(marketplace, startDate, endDate));
+        return ResponseEntity.ok(retrieveAnalyticsUseCase.retrieveOrderSummaryByChannel(marketplace, startDate, endDate));
     }
 
 }

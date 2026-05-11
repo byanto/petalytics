@@ -1,7 +1,7 @@
 package com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.persistence;
 
-import com.budiyanto.petalytics.petalyticsbackend.domain.dto.ChannelSummaryDto;
-import com.budiyanto.petalytics.petalyticsbackend.domain.dto.LocationSummaryDto;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.ChannelSummaryDto;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.LocationSummaryDto;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
 

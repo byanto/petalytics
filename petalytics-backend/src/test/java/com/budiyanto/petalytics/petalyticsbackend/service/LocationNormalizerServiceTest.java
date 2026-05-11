@@ -1,11 +1,12 @@
 package com.budiyanto.petalytics.petalyticsbackend.service;
 
-import com.budiyanto.petalytics.petalyticsbackend.domain.LocationMapping;
-import com.budiyanto.petalytics.petalyticsbackend.domain.LocationType;
-import com.budiyanto.petalytics.petalyticsbackend.repository.LocationMappingRepository;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.BDDMockito.given;
+
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -13,10 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.mockito.BDDMockito.given;
+import com.budiyanto.petalytics.petalyticsbackend.domain.LocationMapping;
+import com.budiyanto.petalytics.petalyticsbackend.domain.LocationType;
+import com.budiyanto.petalytics.petalyticsbackend.repository.LocationMappingRepository;
 
 
 @DisplayName("Location Normalizer Service Unit Tests")

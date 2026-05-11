@@ -1,9 +1,11 @@
 package com.budiyanto.petalytics.petalyticsbackend.controller;
 
-import com.budiyanto.petalytics.petalyticsbackend.domain.dto.ChannelSummaryDto;
-import com.budiyanto.petalytics.petalyticsbackend.domain.dto.LocationSummaryDto;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.application.service.AnalyticsService;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.ChannelSummaryDto;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.LocationSummaryDto;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.infrastructure.adapter.in.web.AnalyticsController;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
-import com.budiyanto.petalytics.petalyticsbackend.service.AnalyticsService;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

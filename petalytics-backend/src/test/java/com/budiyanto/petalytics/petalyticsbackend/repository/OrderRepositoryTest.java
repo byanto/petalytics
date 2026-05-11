@@ -1,7 +1,5 @@
 package com.budiyanto.petalytics.petalyticsbackend.repository;
 
-import com.budiyanto.petalytics.petalyticsbackend.domain.dto.ChannelSummaryDto;
-import com.budiyanto.petalytics.petalyticsbackend.domain.dto.LocationSummaryDto;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.persistence.SpringDataOrderRepository;
@@ -16,6 +14,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 import com.budiyanto.petalytics.petalyticsbackend.TestcontainersConfiguration;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.ChannelSummaryDto;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.LocationSummaryDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

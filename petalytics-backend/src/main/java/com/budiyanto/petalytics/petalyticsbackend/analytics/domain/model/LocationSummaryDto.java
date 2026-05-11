@@ -1,4 +1,4 @@
-package com.budiyanto.petalytics.petalyticsbackend.domain.dto;
+package com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model;
 
 import java.math.BigDecimal;
 
