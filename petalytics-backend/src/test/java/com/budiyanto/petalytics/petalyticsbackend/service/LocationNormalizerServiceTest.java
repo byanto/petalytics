@@ -14,9 +14,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.budiyanto.petalytics.petalyticsbackend.domain.LocationMapping;
-import com.budiyanto.petalytics.petalyticsbackend.domain.LocationType;
-import com.budiyanto.petalytics.petalyticsbackend.repository.LocationMappingRepository;
+import com.budiyanto.petalytics.petalyticsbackend.location.application.port.out.LocationMappingRepositoryPort;
+import com.budiyanto.petalytics.petalyticsbackend.location.application.service.LocationNormalizerService;
+import com.budiyanto.petalytics.petalyticsbackend.location.domain.model.LocationMapping;
+import com.budiyanto.petalytics.petalyticsbackend.location.domain.model.LocationType;
 
 
 @DisplayName("Location Normalizer Service Unit Tests")
@@ -24,7 +25,7 @@ import com.budiyanto.petalytics.petalyticsbackend.repository.LocationMappingRepo
 class LocationNormalizerServiceTest {
 
     @Mock
-    private LocationMappingRepository repository;
+    private LocationMappingRepositoryPort repository;
 
     @InjectMocks
     private LocationNormalizerService normalizer;

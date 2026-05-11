@@ -1,4 +1,4 @@
-package com.budiyanto.petalytics.petalyticsbackend.domain;
+package com.budiyanto.petalytics.petalyticsbackend.location.domain.model;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

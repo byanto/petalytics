@@ -1,23 +1,23 @@
-package com.budiyanto.petalytics.petalyticsbackend.service;
-
-import com.budiyanto.petalytics.petalyticsbackend.domain.LocationMapping;
-import com.budiyanto.petalytics.petalyticsbackend.domain.LocationType;
-import com.budiyanto.petalytics.petalyticsbackend.repository.LocationMappingRepository;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+package com.budiyanto.petalytics.petalyticsbackend.location.application.service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Service
+import com.budiyanto.petalytics.petalyticsbackend.location.application.port.in.NormalizeLocationUseCase;
+import com.budiyanto.petalytics.petalyticsbackend.location.application.port.out.LocationMappingRepositoryPort;
+import com.budiyanto.petalytics.petalyticsbackend.location.domain.model.LocationMapping;
+import com.budiyanto.petalytics.petalyticsbackend.location.domain.model.LocationType;
+
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 @RequiredArgsConstructor
 @Slf4j
-public class LocationNormalizerService {
+public class LocationNormalizerService implements NormalizeLocationUseCase {
 
-    private final LocationMappingRepository mappingRepository;
+    private final LocationMappingRepositoryPort mappingRepositoryPort;
 
     // High-performance in-memory cache to prevent N+1 queries during data ingestion
     private final Map<String, String> provinceMap = new ConcurrentHashMap<>();
@@ -26,7 +26,7 @@ public class LocationNormalizerService {
     @PostConstruct
     public void loadMappingCache() {
         log.info("Loading location mapping rules into memory cache...");
-        List<LocationMapping> mappings = mappingRepository.findAll();
+        List<LocationMapping> mappings = mappingRepositoryPort.findAll();
         for (LocationMapping mapping: mappings) {
             if (mapping.getLocationType().equals(LocationType.PROVINCE)) {
                 provinceMap.put(mapping.getRawName().toLowerCase(), mapping.getStandardizedName());

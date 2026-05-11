@@ -23,7 +23,7 @@ Work in Micro-Tasks. Commit after each Green/Refactor cycle.
 
 ## Phase 5: Analytics & Location
 - [X] Task 5.1: Apply Phase 2-4 steps to the Analytics context.
-- [ ] Task 5.2: Apply Phase 2-4 steps to the Location context.
+- [X] Task 5.2: Apply Phase 2-4 steps to the Location context.
 
 ## Phase 6: Polish
 - [ ] Task 6.1: Implement Global `@RestControllerAdvice`.

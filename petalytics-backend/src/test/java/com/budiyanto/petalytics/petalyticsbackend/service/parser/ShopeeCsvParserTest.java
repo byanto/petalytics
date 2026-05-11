@@ -16,9 +16,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.budiyanto.petalytics.petalyticsbackend.location.application.service.LocationNormalizerService;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.parser.ShopeeExcelParser;
-import com.budiyanto.petalytics.petalyticsbackend.service.LocationNormalizerService;
 
 @DisplayName("Shopee CSV Parser Tests")
 @ExtendWith(MockitoExtension.class)

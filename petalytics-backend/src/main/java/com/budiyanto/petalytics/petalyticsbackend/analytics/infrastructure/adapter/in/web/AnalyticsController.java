@@ -1,20 +1,20 @@
 package com.budiyanto.petalytics.petalyticsbackend.analytics.infrastructure.adapter.in.web;
 
-import com.budiyanto.petalytics.petalyticsbackend.analytics.application.port.in.RetrieveAnalyticsUseCase;
-import com.budiyanto.petalytics.petalyticsbackend.analytics.application.service.AnalyticsService;
-import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.ChannelSummaryDto;
-import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.LocationSummaryDto;
-import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
+import java.time.LocalDateTime;
+import java.util.List;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.application.port.in.RetrieveAnalyticsUseCase;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.ChannelSummaryDto;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.LocationSummaryDto;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/analytics")

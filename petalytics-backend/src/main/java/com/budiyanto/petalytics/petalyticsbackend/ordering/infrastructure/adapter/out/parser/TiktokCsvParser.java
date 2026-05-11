@@ -1,36 +1,38 @@
 package com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.parser;
 
-import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.CsvParserPort;
-import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
-import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
-import com.budiyanto.petalytics.petalyticsbackend.service.LocationNormalizerService;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-import org.springframework.stereotype.Component;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.math.RoundingMode;
-import org.apache.commons.io.input.BOMInputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.io.input.BOMInputStream;
+import org.springframework.stereotype.Component;
+
+import com.budiyanto.petalytics.petalyticsbackend.location.application.port.in.NormalizeLocationUseCase;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.CsvParserPort;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class TiktokCsvParser implements CsvParserPort {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-    private final LocationNormalizerService locationNormalizerService;
+    private final NormalizeLocationUseCase normalizeLocationUseCase;
 
     @Override
     public Marketplace getSupportedMarketplace() {
@@ -62,8 +64,8 @@ public class TiktokCsvParser implements CsvParserPort {
                             Marketplace.TIKTOK,
                             LocalDateTime.parse(record.get("Created Time"), DATE_FORMATTER),
                             record.get("Buyer Username"),
-                            locationNormalizerService.normalizeProvince(record.get("Province")),
-                            locationNormalizerService.normalizeCity(record.get("Regency and City")),
+                            normalizeLocationUseCase.normalizeProvince(record.get("Province")),
+                            normalizeLocationUseCase.normalizeCity(record.get("Regency and City")),
                             LocalDateTime.parse(record.get("Delivered Time"), DATE_FORMATTER)
                     );
                 });

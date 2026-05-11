@@ -1,10 +1,18 @@
 package com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.parser;
 
-import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.CsvParserPort;
-import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
-import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
-import com.budiyanto.petalytics.petalyticsbackend.service.LocationNormalizerService;
-import lombok.RequiredArgsConstructor;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
 import org.dhatim.fastexcel.reader.Cell;
 import org.dhatim.fastexcel.reader.CellType;
 import org.dhatim.fastexcel.reader.ReadableWorkbook;
@@ -12,20 +20,19 @@ import org.dhatim.fastexcel.reader.Row;
 import org.dhatim.fastexcel.reader.Sheet;
 import org.springframework.stereotype.Component;
 
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.*;
-import java.util.stream.Stream;
+import com.budiyanto.petalytics.petalyticsbackend.location.application.port.in.NormalizeLocationUseCase;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.CsvParserPort;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class ShopeeExcelParser implements CsvParserPort {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    private final LocationNormalizerService locationNormalizerService;
+    private final NormalizeLocationUseCase normalizeLocationUseCase;
 
     @Override
     public Marketplace getSupportedMarketplace() {
@@ -68,8 +75,8 @@ public class ShopeeExcelParser implements CsvParserPort {
                                 Marketplace.SHOPEE,
                                 getDateTimeValue(row, "Waktu Pesanan Dibuat", headerMap),
                                 getCellValue(row, "Username (Pembeli)", headerMap),
-                                locationNormalizerService.normalizeProvince(getCellValue(row, "Provinsi", headerMap)),
-                                locationNormalizerService.normalizeCity(getCellValue(row, "Kota/Kabupaten", headerMap)),
+                                normalizeLocationUseCase.normalizeProvince(getCellValue(row, "Provinsi", headerMap)),
+                                normalizeLocationUseCase.normalizeCity(getCellValue(row, "Kota/Kabupaten", headerMap)),
                                 getDateTimeValue(row, "Waktu Pesanan Selesai", headerMap)
                         );
                     });
