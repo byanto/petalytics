@@ -1,10 +1,12 @@
-package com.budiyanto.petalytics.petalyticsbackend.controller;
+package com.budiyanto.petalytics.petalyticsbackend.analytics.infrastructure.adapter.in.web;
 
-import com.budiyanto.petalytics.petalyticsbackend.analytics.application.service.AnalyticsService;
-import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.ChannelSummaryDto;
-import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.LocationSummaryDto;
-import com.budiyanto.petalytics.petalyticsbackend.analytics.infrastructure.adapter.in.web.AnalyticsController;
-import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -14,13 +16,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.application.service.AnalyticsService;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.ChannelSummaryDto;
+import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.LocationSummaryDto;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 
 @WebMvcTest(AnalyticsController.class)
 @DisplayName("Analytics Controller Tests")

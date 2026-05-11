@@ -1,4 +1,4 @@
-package com.budiyanto.petalytics.petalyticsbackend.service;
+package com.budiyanto.petalytics.petalyticsbackend.ordering.application.service;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
@@ -24,9 +24,9 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.exception.UnsupportedMarketplaceException;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.CsvParserPort;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.OrderRepositoryPort;
-import com.budiyanto.petalytics.petalyticsbackend.ordering.application.service.OrderIngestionService;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
 
@@ -134,28 +134,28 @@ class OrderIngestionServiceTest {
     }
 
     @Test
-    @DisplayName("Given a null Marketplace, when ingest, then throws IllegalArgumentException")
-    void given_nullMarketplace_when_ingest_then_throwsIllegalArgumentException() {
+    @DisplayName("Given a null Marketplace, when ingest, then throws UnsupportedMarketplaceException")
+    void given_nullMarketplace_when_ingest_then_throwsUnsupportedMarketplaceException() {
         // Given
         InputStream inputStream = new ByteArrayInputStream("dummy data".getBytes(StandardCharsets.UTF_8));
 
         // When & Then
         thenThrownBy(() -> orderIngestionService.ingest(inputStream, null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Marketplace cannot be null");
+                .isInstanceOf(UnsupportedMarketplaceException.class)
+                .hasMessageContaining("Unsupported marketplace");
     }
 
     @Test
-    @DisplayName("Given an unsupported Marketplace, when ingest, then throws IllegalArgumentException")
-    void given_unsupportedMarketplace_when_ingest_then_throwsIllegalArgumentException() {
+    @DisplayName("Given an unsupported Marketplace, when ingest, then throws UnsupportedMarketplaceException")
+    void given_unsupportedMarketplace_when_ingest_then_throwsUnsupportedMarketplaceException() {
         // Given
         InputStream inputStream = new ByteArrayInputStream("dummy data".getBytes(StandardCharsets.UTF_8));
 
         // When & Then
         // Since we only registered the Shopee parser in setUp(), passing TIKTOK will yield a null parser.
         thenThrownBy(() -> orderIngestionService.ingest(inputStream, Marketplace.TIKTOK))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("No CSV parser found for marketplace: TIKTOK");
+                .isInstanceOf(UnsupportedMarketplaceException.class)
+                .hasMessageContaining("Unsupported marketplace");
     }
 
     @Test

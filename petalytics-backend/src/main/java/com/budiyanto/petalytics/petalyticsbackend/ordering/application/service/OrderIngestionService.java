@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.exception.UnsupportedMarketplaceException;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.in.IngestOrderUseCase;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.CsvParserPort;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.OrderRepositoryPort;
@@ -35,12 +36,12 @@ public class OrderIngestionService implements IngestOrderUseCase {
         }
 
         if (marketplace == null) {
-            throw new IllegalArgumentException("Marketplace cannot be null");
+            throw new UnsupportedMarketplaceException("null", getSupportedMarketplaces());
         }
 
         CsvParserPort parser = parserRegistry.get(marketplace);
         if (parser == null) {
-            throw new IllegalArgumentException("No CSV parser found for marketplace: " + marketplace);
+            throw new UnsupportedMarketplaceException(marketplace.name(), getSupportedMarketplaces());
         }
 
         List<Order> parsedOrders = parser.parse(inputStream);
@@ -61,5 +62,9 @@ public class OrderIngestionService implements IngestOrderUseCase {
                         .toList();
 
         orderRepositoryPort.saveAll(ordersToSave);
+    }
+
+    private List<String> getSupportedMarketplaces() {
+        return parserRegistry.keySet().stream().map(Marketplace::name).toList();
     }
 }

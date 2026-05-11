@@ -18,7 +18,7 @@ import java.util.UUID;
 public interface SpringDataOrderRepository extends JpaRepository<Order, UUID> {
 
     @Query("""
-        SELECT new com.budiyanto.petalytics.petalyticsbackend.domain.dto.LocationSummaryDto(
+        SELECT new com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.LocationSummaryDto(
                 o.province, o.city, COUNT(o), SUM(o.totalAmount)
         )
         FROM Order o
@@ -35,7 +35,7 @@ public interface SpringDataOrderRepository extends JpaRepository<Order, UUID> {
     );
 
     @Query("""
-        SELECT new com.budiyanto.petalytics.petalyticsbackend.domain.dto.ChannelSummaryDto(
+        SELECT new com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.ChannelSummaryDto(
                 o.marketplace, COUNT(o), SUM(o.totalAmount)
         )
         FROM Order o

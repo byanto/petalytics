@@ -21,6 +21,7 @@ import org.apache.commons.io.input.BOMInputStream;
 import org.springframework.stereotype.Component;
 
 import com.budiyanto.petalytics.petalyticsbackend.location.application.port.in.NormalizeLocationUseCase;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.exception.InvalidFileContentException;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.CsvParserPort;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
@@ -88,13 +89,13 @@ public class TiktokCsvParser implements CsvParserPort {
 
             }
         } catch (DateTimeParseException ex) {
-            throw new IllegalArgumentException("Invalid data format in Tiktok CSV: Unable to parse dates.", ex);
+            throw new InvalidFileContentException("Invalid Tiktok CSV format: Unable to parse date: " + ex.getMessage());
         } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Invalid data format in Tiktok CSV: Unable to parse numbers.", ex);
+            throw new InvalidFileContentException("Invalid Tiktok CSV format: Unable to parse number: " + ex.getMessage());
         } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Invalid Tiktok CSV format: Missing required columns: " + ex.getMessage(), ex);
+            throw new InvalidFileContentException("Invalid Tiktok CSV format: Missing required column: " + ex.getMessage());
         } catch (Exception ex) {
-            throw new RuntimeException("Failed to parse Tiktok CSV data", ex);
+            throw new InvalidFileContentException("Failed to parse Tiktok CSV data: " + ex.getMessage());
         }
 
         return new ArrayList<>(orderMap.values());

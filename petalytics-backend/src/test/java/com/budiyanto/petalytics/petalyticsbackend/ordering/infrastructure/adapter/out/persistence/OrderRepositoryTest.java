@@ -1,8 +1,10 @@
-package com.budiyanto.petalytics.petalyticsbackend.repository;
+package com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.persistence;
 
-import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
-import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
-import com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.persistence.SpringDataOrderRepository;
+import static org.assertj.core.api.BDDAssertions.then;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,12 +18,8 @@ import org.springframework.context.annotation.Import;
 import com.budiyanto.petalytics.petalyticsbackend.TestcontainersConfiguration;
 import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.ChannelSummaryDto;
 import com.budiyanto.petalytics.petalyticsbackend.analytics.domain.model.LocationSummaryDto;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
 
 @DataJpaTest
 @Import(TestcontainersConfiguration.class)

@@ -21,6 +21,7 @@ import org.dhatim.fastexcel.reader.Sheet;
 import org.springframework.stereotype.Component;
 
 import com.budiyanto.petalytics.petalyticsbackend.location.application.port.in.NormalizeLocationUseCase;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.exception.InvalidFileContentException;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.application.port.out.CsvParserPort;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
@@ -90,10 +91,10 @@ public class ShopeeExcelParser implements CsvParserPort {
                     );
                 }
             }
-        } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Invalid Shopee Excel format: " + ex.getMessage(), ex);
+        } catch (InvalidFileContentException ex) {
+            throw ex;
         } catch (Exception ex) {
-            throw new RuntimeException("Failed to parse Shopee Excel file", ex);
+            throw new InvalidFileContentException("Failed to parse Shopee Excel file: " + ex.getMessage());
         }
 
         return new ArrayList<>(orderMap.values());
@@ -101,8 +102,7 @@ public class ShopeeExcelParser implements CsvParserPort {
 
     // Helper method to safely extract Strings
     private String getCellValue(Row row, String columnName, Map<String, Integer> headerMap) {
-        Integer colIndex = headerMap.get(columnName);
-        if (colIndex == null) throw new IllegalArgumentException("Missing required column: " + columnName);
+        Integer colIndex = getColumnIndex(columnName, headerMap);
         
         Cell cell = row.getCell(colIndex);
         if (cell == null) return "";
@@ -111,8 +111,7 @@ public class ShopeeExcelParser implements CsvParserPort {
 
     // Helper method to safely extract Dates (Protects against the Excel Date Trap)
     private LocalDateTime getDateTimeValue(Row row, String columnName, Map<String, Integer> headerMap) {
-        Integer colIndex = headerMap.get(columnName);
-        if (colIndex == null) throw new IllegalArgumentException("Missing required column: " + columnName);
+        Integer colIndex = getColumnIndex(columnName, headerMap);
         
         Cell cell = row.getCell(colIndex);
         if (cell == null || cell.getText().isBlank()) return null;
@@ -127,14 +126,13 @@ public class ShopeeExcelParser implements CsvParserPort {
         try {
             return LocalDateTime.parse(cell.getText().trim(), DATE_FORMATTER);
         } catch (DateTimeParseException ex) {
-            throw new IllegalArgumentException("Unable to parse date in column: " + columnName + " with value: " + cell.getText(), ex);
+            throw new InvalidFileContentException("Unable to parse date in column: " + columnName + " with value: " + cell.getText());
         }
     }
 
     // Helper method to safely extract raw Numbers (Protects against the Excel Locale Format)
     private BigDecimal getNumericValue(Row row, String columnName, Map<String, Integer> headerMap) {
-        Integer colIndex = headerMap.get(columnName);
-        if (colIndex == null) throw new IllegalArgumentException("Missing required column: " + columnName);
+        Integer colIndex = getColumnIndex(columnName, headerMap);
 
         Cell cell = row.getCell(colIndex);
         if (cell == null || cell.getText().isBlank()) return BigDecimal.ZERO;
@@ -149,7 +147,13 @@ public class ShopeeExcelParser implements CsvParserPort {
         try {
             return new BigDecimal(text);
         } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Unable to parse numbers in column: " + columnName, ex);
+            throw new InvalidFileContentException("Unable to parse number in column: " + columnName + " with value: " + cell.getText());
         }
+    }
+
+    private int getColumnIndex(String columnName, Map<String, Integer> headerMap) {
+        Integer colIndex = headerMap.get(columnName);
+        if (colIndex == null) throw new InvalidFileContentException("Missing required column: " + columnName);
+        return colIndex;
     }
 }

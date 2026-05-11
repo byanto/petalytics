@@ -1,4 +1,4 @@
-package com.budiyanto.petalytics.petalyticsbackend.service;
+package com.budiyanto.petalytics.petalyticsbackend.location.application.service;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.BDDMockito.given;
@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.budiyanto.petalytics.petalyticsbackend.location.application.port.out.LocationMappingRepositoryPort;
-import com.budiyanto.petalytics.petalyticsbackend.location.application.service.LocationNormalizerService;
 import com.budiyanto.petalytics.petalyticsbackend.location.domain.model.LocationMapping;
 import com.budiyanto.petalytics.petalyticsbackend.location.domain.model.LocationType;
 

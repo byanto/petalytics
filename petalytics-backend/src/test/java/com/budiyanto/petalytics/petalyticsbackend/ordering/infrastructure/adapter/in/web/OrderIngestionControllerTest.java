@@ -1,8 +1,11 @@
-package com.budiyanto.petalytics.petalyticsbackend.controller;
+package com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.in.web;
 
-import com.budiyanto.petalytics.petalyticsbackend.ordering.application.service.OrderIngestionService;
-import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
-import com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.in.web.OrderIngestionController;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -14,12 +17,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.service.OrderIngestionService;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Marketplace;
 
 @WebMvcTest(OrderIngestionController.class)
 @DisplayName("Order Ingestion Controller Tests")

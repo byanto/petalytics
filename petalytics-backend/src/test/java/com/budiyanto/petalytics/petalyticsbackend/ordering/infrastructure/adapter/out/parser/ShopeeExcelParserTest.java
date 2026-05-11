@@ -1,4 +1,4 @@
-package com.budiyanto.petalytics.petalyticsbackend.service.parser;
+package com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.parser;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
@@ -17,12 +17,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.budiyanto.petalytics.petalyticsbackend.location.application.service.LocationNormalizerService;
+import com.budiyanto.petalytics.petalyticsbackend.ordering.application.exception.InvalidFileContentException;
 import com.budiyanto.petalytics.petalyticsbackend.ordering.domain.model.Order;
-import com.budiyanto.petalytics.petalyticsbackend.ordering.infrastructure.adapter.out.parser.ShopeeExcelParser;
 
 @DisplayName("Shopee CSV Parser Tests")
 @ExtendWith(MockitoExtension.class)
-class ShopeeCsvParserTest {
+class ShopeeExcelParserTest {
 
     @Mock
     private LocationNormalizerService locationNormalizer;
@@ -78,41 +78,41 @@ class ShopeeCsvParserTest {
     }
 
     @Test
-    @DisplayName("Given a xlsx file with missing headers, when parse, then throws IllegalArgumentException")
-    void given_xlsxWithMissingHeaders_when_parse_then_throwsIllegalArgumentException() {
+    @DisplayName("Given a xlsx file with missing headers, when parse, then throws InvalidFileContentException")
+    void given_xlsxWithMissingHeaders_when_parse_then_throwsInvalidFileContentException() {
         // Given: A xlsx file that is missing the "No. Pesanan" column
         InputStream inputStream = getClass().getResourceAsStream("/shopee-missing-headers.xlsx");
         then(inputStream).as("Missing Headers Excel file not found in src/test/resources!").isNotNull();
 
         // When & Then
         thenThrownBy(() -> shopeeExcelParser.parse(inputStream))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(InvalidFileContentException.class)
                 .hasMessageContaining("Missing required column");
     }
 
     @Test
-    @DisplayName("Given a xlsx file with invalid numbers, when parse, then throws IllegalArgumentException")
-    void given_xlsxWithInvalidNumbers_when_parse_then_throwsIllegalArgumentException() {
+    @DisplayName("Given a xlsx file with invalid numbers, when parse, then throws InvalidFileContentException")
+    void given_xlsxWithInvalidNumbers_when_parse_then_throwsInvalidFileContentException() {
         // Given: Harga Setelah Diskon is "FREE" instead of a number
         InputStream inputStream = getClass().getResourceAsStream("/shopee-invalid-numbers.xlsx");
         then(inputStream).as("Invalid Numbers Excel file not found in src/test/resources!").isNotNull();
 
         // When & Then
         thenThrownBy(() -> shopeeExcelParser.parse(inputStream))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(InvalidFileContentException.class)
                 .hasMessageContaining("Unable to parse number");
     }
 
     @Test
-    @DisplayName("Given a xlsx file with invalid date, when parse, then throws IllegalArgumentException")
-    void given_xlsxWithInvalidDate_when_parse_then_throwsIllegalArgumentException() {
+    @DisplayName("Given a xlsx file with invalid date, when parse, then throws InvalidFileContentException")
+    void given_xlsxWithInvalidDate_when_parse_then_throwsInvalidFileContentException() {
         // Given: Waktu Pesanan Dibuat has a wrong date format
         InputStream inputStream = getClass().getResourceAsStream("/shopee-invalid-date.xlsx");
         then(inputStream).as("Invalid Date Excel file not found in src/test/resources!").isNotNull();
 
         // When & Then
         thenThrownBy(() -> shopeeExcelParser.parse(inputStream))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(InvalidFileContentException.class)
                 .hasMessageContaining("Unable to parse date");
     }
 
