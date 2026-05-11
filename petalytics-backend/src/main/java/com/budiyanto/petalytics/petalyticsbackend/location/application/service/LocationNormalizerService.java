@@ -63,18 +63,13 @@ public class LocationNormalizerService implements NormalizeLocationUseCase {
         return toTitleCase(trimmed);
     }
 
-    private String toTitleCase(String text) {
-        if (text == null || text.isBlank()) {
-            return text;
-        }
+    private String toTitleCase(String text) {        
         String[] words = text.split("\\s+");
         StringBuilder titleCase = new StringBuilder();
         for (String word : words) {
-            if (!word.isEmpty()) {
-                titleCase.append(Character.toUpperCase(word.charAt(0)))
-                         .append(word.substring(1).toLowerCase())
-                         .append(" ");
-            }
+            titleCase.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1).toLowerCase())
+                        .append(" ");
         }
         return titleCase.toString().trim();
     }

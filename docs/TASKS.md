@@ -27,5 +27,5 @@ Work in Micro-Tasks. Commit after each Green/Refactor cycle.
 
 ## Phase 6: Polish
 - [X] Task 6.1: Implement Global `@RestControllerAdvice`.
-- [ ] Task 6.2: Ensure 100% test coverage on Domain and Application layers.
+- [X] Task 6.2: Ensure 100% test coverage on Domain and Application layers.
 - [ ] Task 6.3: Clean up empty legacy folders.

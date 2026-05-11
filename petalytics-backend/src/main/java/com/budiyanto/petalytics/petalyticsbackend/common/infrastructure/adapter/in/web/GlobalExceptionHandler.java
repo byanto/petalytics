@@ -31,9 +31,17 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
-    // Bad Request (400) for invalid input or business rule violations
-    @ExceptionHandler({IllegalArgumentException.class, MissingServletRequestParameterException.class})
-    public ProblemDetail handleBadRequestException(Exception ex) {
+    // Unprocessable Entity (422) for domain logic and semantic business rule violations
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ProblemDetail handleIllegalArgumentException(IllegalArgumentException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage());
+        problemDetail.setTitle("Unprocessable Entity");
+        return problemDetail;
+    }
+
+    // Bad Request (400) for structural issues or missing request parameters
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ProblemDetail handleMissingParameterException(MissingServletRequestParameterException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
         problemDetail.setTitle("Bad Request");
         return problemDetail;

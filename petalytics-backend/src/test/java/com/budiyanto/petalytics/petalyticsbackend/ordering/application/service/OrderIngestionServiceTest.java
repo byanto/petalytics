@@ -5,6 +5,7 @@ import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -13,6 +14,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -165,6 +167,22 @@ class OrderIngestionServiceTest {
         thenThrownBy(() -> orderIngestionService.ingest(null, Marketplace.SHOPEE))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("InputStream cannot be null");
+    }
+
+    @Test
+    @DisplayName("Given an empty parsed list, when ingest, then return early without calling database")
+    void given_emptyParsedList_when_ingest_then_returnEarlyWithoutCallingDatabase() {
+        // Given
+        InputStream inputStream = new ByteArrayInputStream("".getBytes());
+        given(shopeeCsvParser.parse(inputStream)).willReturn(Collections.emptyList());
+        
+        // When
+        orderIngestionService.ingest(inputStream, Marketplace.SHOPEE);
+        
+        // Then
+        // Verify that it returned early and NEVER hit the database
+        verify(orderRepositoryPort, never()).findExistingOrderNosFromGivenList(any());
+        verify(orderRepositoryPort, never()).saveAll(any());
     }
 
 }

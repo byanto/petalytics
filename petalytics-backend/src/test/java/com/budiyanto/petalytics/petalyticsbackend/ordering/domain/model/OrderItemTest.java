@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 @DisplayName("OrderItem tests")
 class OrderItemTest {
@@ -41,6 +44,35 @@ class OrderItemTest {
         }
 
         @Test
+        @DisplayName("Given a null order, when createOrderItem, then throw IllegalArgumentException")
+        void given_nullOrder_when_createOrderItem_then_throwIllegalArgumentException() {
+            // Given
+            Order nullOrder = null;
+
+            // When
+            Throwable thrown = catchThrowable(() -> OrderItem.create(nullOrder, "SKU 1", "Product A", new BigDecimal("0"), 5));
+
+            // Then
+            then(thrown)
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("Order item must be associated with an order");
+        }
+
+        @ParameterizedTest(name = "Given ''{0}'', throws ''IllegalArgumentException''")
+        @NullSource
+        @ValueSource(strings = {"", "   "})
+        @DisplayName("Given null or blank order item name, when createOrderItem, then throw IllegalArgumentException")
+        void given_nullOrBlankOrderItemName_when_createOrderItem_then_throwIllegalArgumentException(String input) {
+            // When
+            Throwable thrown = catchThrowable(() -> OrderItem.create(order, "SKU 1", input, new BigDecimal("0"), 5));
+
+            // Then
+            then(thrown)
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("Order item name cannot be null or blank");
+        }
+
+        @Test
         @DisplayName("Given an order item with zero or negative quantity, when createOrderItem, then throw IllegalArgumentException")
         void given_orderItemWithZeroOrNegativeQuantity_when_createOrderItem_then_throwIllegalArgumentException() {
             // When
@@ -62,21 +94,6 @@ class OrderItemTest {
             then(thrown)
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Order item price must be greater than zero");
-        }
-
-        @Test
-        @DisplayName("Given a null order, when createOrderItem, then throw IllegalArgumentException")
-        void given_nullOrder_when_createOrderItem_then_throwIllegalArgumentException() {
-            // Given
-            Order nullOrder = null;
-
-            // When
-            Throwable thrown = catchThrowable(() -> OrderItem.create(nullOrder, "SKU 1", "Product A", new BigDecimal("0"), 5));
-
-            // Then
-            then(thrown)
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("Order item must be associated with an order");
         }
 
     }

@@ -10,6 +10,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -43,6 +45,14 @@ class LocationNormalizerServiceTest {
         normalizer.loadMappingCache();
     }
 
+    @ParameterizedTest(name = "Given ''{0}'', expects ''Unknown Province''")
+    @NullSource
+    @ValueSource(strings = {"", "   "})
+    @DisplayName("Given null or blank province names, when normalizeProvince, then returns Unknown Province")
+    void given_nullOrBlankProvinceNames_when_normalizeProvince_then_returnsUnknownProvince(String input) {
+        then(normalizer.normalizeProvince(input)).isEqualTo("Unknown Province");
+    }
+
     @ParameterizedTest(name = "Given ''{0}'', expects ''{1}''")
     @CsvSource({
             "Jawa Barat, Jawa Barat", // It shouldn't change any standard name
@@ -56,6 +66,14 @@ class LocationNormalizerServiceTest {
     @DisplayName("Given variant province names, when normalizeProvince, then return standard name")
     void given_variantProvinceNames_when_normalizeProvince_then_returnsStandardName(String input, String expected) {
         then(normalizer.normalizeProvince(input)).isEqualTo(expected);
+    }
+
+    @ParameterizedTest(name = "Given ''{0}'', expects ''Unknown City''")
+    @NullSource
+    @ValueSource(strings = {"", "   "})
+    @DisplayName("Given null or blank city names, when normalizeCity, then returns Unknown City")
+    void given_nullOrBlankCityNames_when_normalizeCity_then_returnsUnknownCity(String input) {
+        then(normalizer.normalizeCity(input)).isEqualTo("Unknown City");
     }
 
     @ParameterizedTest(name = "Given ''{0}'', expects ''{1}''")

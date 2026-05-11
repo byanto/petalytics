@@ -72,7 +72,7 @@ class OrderIngestionControllerTest {
             mockMvc.perform(multipart("/api/ingestion/upload")
                             .file(file)
                             .param("marketplace", "INVALID_MARKETPLACE"))
-                    .andExpect(status().isBadRequest());
+                    .andExpect(status().isUnprocessableEntity());
         }
 
         @Test
